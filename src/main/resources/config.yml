@@ -1,0 +1,42 @@
+# Core plugin settings
+core:
+  # Should the startup banner be shown?
+  show_banner: true
+  # Which players should count as owners
+  # The recommended way for adding owners is by setting the 'szlaban.owner' permission node
+  # WARNING: All listed players will have ownership permissions on the plugin!
+  owners: []
+
+
+
+# Settings for the advisory module
+advisories:
+  # Whether to enable the module
+  enabled: true
+  # Whether to show owners the first-time login message
+  show_first_login_message: true
+  # List of advisory IDs that have been ignored
+  ignored_advisories:
+    - chat_reporting
+  #
+
+# Settings for the firewall module
+firewall:
+  # Whether to enable the module
+  enabled: true
+
+  # A list of files containing IPs/CIDR ranges that should be blocked
+  # - These should be text files with one IP/CIDR entry per line
+  # - Files can be either local or remote
+  # - Local file paths are relative to the plugin's config directory
+  #     i.e. plugins/Szlaban/
+  blocklists:
+    - firewall.txt
+    - https://github.com/pebblehost/hunter/raw/refs/heads/master/ips.txt
+
+# Settings for the fail2ban module
+fail2ban:
+  # Whether to enable the module
+  enabled: false
+
+  # TODO: add config options
