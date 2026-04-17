@@ -1,3 +1,8 @@
+@file:Suppress("UNRESOLVED_REFERENCE")
+// IntelliJ has a problem where it screams at me when I try to use the
+// ShadowJar plugin in Gradle Kotlin DSL. This gets rid of 2/3 of associated
+// issues.
+
 import xyz.jpenilla.runpaper.task.RunServer
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
@@ -38,7 +43,8 @@ dependencies {
             }
         }
 
-        named<ShadowJar>("shadowJar") {
+        // all errors in this function are fake, it's just an attention seeker
+        shadowJar {
             manifest {
                 attributes(
                     "paperweight-mappings-namespace" to "mojang"
