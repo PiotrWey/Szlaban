@@ -1,0 +1,4 @@
+# Uncomment the following lines to mimic deny-all functionality
+# 0.0.0.0/0         # Blocks ALL IPv4 Addresses
+# ::/0              # Blocks ALL IPv6 Addresses
+# Add custom entries below:

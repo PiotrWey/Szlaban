@@ -1,3 +1,6 @@
+# File Version - DO NOT CHANGE
+config-version: 1
+
 # Core plugin settings
 core:
   # Should the startup banner be shown?
@@ -8,35 +11,110 @@ core:
   owners: []
 
 
+# Map of modules to enable and booleans for whether they should be enabled
+modules:
+  advisories: true
+  firewall: true
+  fail2ban: false
 
 # Settings for the advisory module
 advisories:
-  # Whether to enable the module
-  enabled: true
   # Whether to show owners the first-time login message
-  show_first_login_message: true
+  show-first-login-message: true
+
   # List of advisory IDs that have been ignored
-  ignored_advisories:
-    - chat_reporting
-  #
+  ignored-advisories:
+  # - online_mode
+  # - whitelist
+  # - rcon
+  # - chat_signing
+
+  # Whether to allow writing directly to other configuration files (i.e.
+  # those not managed by this plugin).
+  # Useful if you want to toggle settings not normally editable in-game
+  # (like `enforce-secure-profile`), but there's a small chance it'll
+  # cause instabilities.
+  allow-other-config-changes: true
 
 # Settings for the firewall module
 firewall:
-  # Whether to enable the module
-  enabled: true
+  # What engine to use for firewall management
+  # Unless you have a specific configuration in mind, just use 'internal'
+  # Allowed values: internal, iptables, ufw
+  #   internal:  Use the plugin's internal connection filtering logic
+  #   iptables:  Apply blocking rules at the firewall level (iptables)
+  #   ufw:       Apply blocking rules at the firewall level (ufw)
+  engine: internal
+
+  # How to deal with blocked traffic
+  # Allowed values: drop, log
+  #   drop:  Terminates blocked connections (also logs them)
+  #   log:   Logs blocked connections (not very useful)
+  response: drop
 
   # A list of files containing IPs/CIDR ranges that should be blocked
   # - These should be text files with one IP/CIDR entry per line
+  # - Comments should start with #
   # - Files can be either local or remote
+  # - Remote files should only be unauthenticated HTTP/S
   # - Local file paths are relative to the plugin's config directory
   #     i.e. plugins/Szlaban/
   blocklists:
-    - firewall.txt
+    - blocklist.txt
     - https://github.com/pebblehost/hunter/raw/refs/heads/master/ips.txt
+
+  # A list of files containing IPs/CIDR ranges that should always be allowed
+  # to connect. This takes precedence over blocklists.
+  # By default, the plugin operates in allow-all mode, making this option irrelevant
+  # unless you wish to whitelist IPs within a blocked range.
+  # While there isn't a deny-all mode by default, this can be achieved quite easily
+  # by adding 0.0.0.0/0 and ::/0 to your blocklists.
+  allowlists:
+    - allowlist.txt
+
+  # How often (in seconds) the plugin should automatically re-read the contents of
+  # each kind of blocklist file.
+  # This does not affect the config reload command.
+  # Special values:
+  #    0:  Update only when file contents are changed (only works with local)
+  #   -1:  Never update after initial load
+  blocklist-update-rate:
+    local: 0
+    remote: 7200
+
+  # ==== ADVANCED FIREWALL SETTINGS ====
+  # If you want more from your firewall, you can play around with these settings.
+
+  # Whether to enable IP information lookup for more advanced filters.
+  # This will run after basic IP filtering to avoid unnecessary requests for IPs
+  # that are blocked anyway.
+  # This may incur performance penalties if your server is getting too many connections
+  # at once, but that's what caching is for! Also this feature will attempt to rate-limit
+  # itself so we don't get blocked from the API...
+  enable-ip-lookup: false
+
+  # Advanced filtering rules
+  # The firewall will match these directly against the API output from the GeoIP database.
+  # For blocking multiple values, please create multiple filters. Yes this is inefficient
+  # but it's the best system there is for now.
+  # Please refer to the API docs for the selected IP info API
+  advanced-block-filters:
+  # - asn: 1234
+  # - country_code: GB
+
+  # The API backend to use for IP info.
+  # You may want to change this if you are hitting rate limits (429)
+  # Just uncomment the other line, and comment the previous one.
+
+  # More data, rate-limit 1 req/s. Docs: https://ipwhois.io/docs
+  _api-backend: 'https://ipwho.is/{}'
+  # Limited data, no specified rate-limit. Docs: https://seeip.org/
+  # _api-backend: 'https://api.seeip.org/geoip/{}'
+
+
+
 
 # Settings for the fail2ban module
 fail2ban:
-  # Whether to enable the module
-  enabled: false
 
   # TODO: add config options
