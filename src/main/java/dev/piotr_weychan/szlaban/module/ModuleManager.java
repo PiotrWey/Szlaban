@@ -6,7 +6,6 @@ package dev.piotr_weychan.szlaban.module;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class ModuleManager {
    * @return a list of module identifiers
    */
   public List<String> getModuleIds() {
-    return new ArrayList<>(modules.keySet());
+    return List.copyOf(modules.keySet());
   }
 
   /**
@@ -68,7 +67,7 @@ public class ModuleManager {
    * @return a list of all the registered {@link Module} objects
    */
   public List<Module> getModules() {
-    return new ArrayList<>(modules.values());
+    return List.copyOf(modules.values());
   }
 
 
