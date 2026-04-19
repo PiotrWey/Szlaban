@@ -45,10 +45,15 @@ public final class Szlaban extends JavaPlugin {
     ArrayList<String> keys = new ArrayList<>(moduleCfg.getKeys(false));
 
     for (String key : keys) {
+      Module module = moduleManager.getModule(key);
+      if (module == null) {
+        getSLF4JLogger().error("Failed to lode module '{}': Not found", key);
+        continue;
+      };
       // enable module if config says so
-      if (moduleCfg.getBoolean(key)) moduleManager.getModule(key).enable();
+      if (moduleCfg.getBoolean(key)) module.enable();
       // otherwise disable it
-      else moduleManager.getModule(key).disable();
+      else module.disable();
     }
   }
 

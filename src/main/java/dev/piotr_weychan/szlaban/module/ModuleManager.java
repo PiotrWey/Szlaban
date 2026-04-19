@@ -5,11 +5,14 @@
 package dev.piotr_weychan.szlaban.module;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class ModuleManager {
+public final class ModuleManager {
   private final JavaPlugin plugin;
   private final HashMap<String, Module> modules = new HashMap<>();
 
@@ -23,10 +26,11 @@ public class ModuleManager {
    * @param module the instance of the module class
    */
   public void registerModule(String id, Module module) {
-    // Check if the module is already present
-    if (modules.containsKey(id)) return;
-    // Register the module in the map
-    modules.put(id, module);
+    // Register the module in the map, ignoring if already present
+    if (modules.putIfAbsent(id, module) != null) return;
+
+    // execute register logic
+    module.onRegister();
   }
 
   /**
@@ -34,12 +38,14 @@ public class ModuleManager {
    * @param id the identifier for the module to remove
    */
   public void unregisterModule(String id) {
-    // Check if the module is present in the map first to avoid NullPointerExceptions
-    if (!modules.containsKey(id)) return;
+    // Attempt to remove module from the map, returning if not present
+    Module module = modules.remove(id);
+    if (module == null) return;
+    // Execute cleanup logic
     // Disable module first
-    modules.get(id).disable();
-    // Unregister it
-    modules.remove(id);
+    module.disable();
+    // Call the custom unregister logic
+    module.onUnregister();
   }
 
   /**
@@ -47,6 +53,8 @@ public class ModuleManager {
    * @param id the identifier for the module to find
    * @return the module associated with the identifier, or {@code null} if not present
    */
+  @Contract(pure = true)
+  @Nullable
   public Module getModule(String id) {
     return modules.get(id);
   }
@@ -55,6 +63,8 @@ public class ModuleManager {
    * Gets a list of registered module identifiers.
    * @return a list of module identifiers
    */
+  @Unmodifiable
+  @Contract(pure = true)
   public List<String> getModuleIds() {
     return List.copyOf(modules.keySet());
   }
@@ -66,6 +76,8 @@ public class ModuleManager {
    * should only be used for bulk operations involving all modules.
    * @return a list of all the registered {@link Module} objects
    */
+  @Unmodifiable
+  @Contract(pure = true)
   public List<Module> getModules() {
     return List.copyOf(modules.values());
   }

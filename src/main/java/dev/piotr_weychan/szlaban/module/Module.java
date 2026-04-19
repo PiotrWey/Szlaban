@@ -8,4 +8,6 @@ public interface Module {
   void enable();
   void disable();
   boolean isEnabled();
+  void onRegister();
+  void onUnregister();
 }
