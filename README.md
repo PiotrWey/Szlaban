@@ -49,8 +49,8 @@ following instructions are given as guidance, and may vary depending on where yo
 ## Configuration
 
 The plugin is primarily configured using YAML, a simple, human-readable configuration language. If you haven't used YAML
-before, you might want to read [Learn X in Y minutes' article on YAML](https://learnxinyminutes.com/yaml/) to understand
-the format better.
+before, you might want to read [Learn YAML in Y minutes](https://learnxinyminutes.com/yaml/) to understand the format
+better.
 
 The main configuration file, `config.yml`, consists of several sections for configuring different aspects of the plugin,
 most fields' function and expected values are documented via comments in the file itself, so it should be easy to start
