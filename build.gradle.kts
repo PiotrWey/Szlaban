@@ -29,6 +29,12 @@ repositories {
 dependencies {
     // Paper API
     compileOnly("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
+    // Protocollib
+    compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
+
+    // unit tests
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
 
     tasks {
         named<RunServer>("runServer") {
@@ -50,6 +56,10 @@ dependencies {
                     "paperweight-mappings-namespace" to "mojang"
                 )
             }
+        }
+
+        test {
+            useJUnitPlatform()
         }
     }
 }

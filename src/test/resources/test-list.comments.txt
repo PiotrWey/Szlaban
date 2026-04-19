@@ -1,0 +1,4 @@
+# This is a configuration list file with comments
+192.168.0.1/32
+# 192.168.0.2/32
+192.168.0.3/32      # This line has a trailing comment
