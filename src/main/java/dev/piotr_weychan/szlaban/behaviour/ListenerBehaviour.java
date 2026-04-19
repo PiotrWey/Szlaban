@@ -19,7 +19,7 @@ public abstract class ListenerBehaviour extends AbstractBehaviour implements Lis
     if (enabled) return;
     enabled = true;
     // register this behaviour on the server
-    ctx.getPlugin().getServer().getPluginManager().registerEvents(this, ctx.getPlugin());
+    ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
   }
 
   public void stop() {

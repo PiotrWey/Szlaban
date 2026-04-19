@@ -23,4 +23,6 @@ contributors: ${contributors}
 api-version: ${api_version}
 main: ${main}
 depend: []
+softdepend:
+  - ProtocolLib
 libraries: []

@@ -5,27 +5,34 @@
 
 package dev.piotr_weychan.szlaban;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import dev.piotr_weychan.szlaban.behaviour.Capability;
+import dev.piotr_weychan.szlaban.firewall.FirewallModule;
 import dev.piotr_weychan.szlaban.module.Module;
 import dev.piotr_weychan.szlaban.module.ModuleManager;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 
 public final class Szlaban extends JavaPlugin {
   private final ModuleManager moduleManager;
   private final int configVersion = 1;
 
+  private final EnumSet<Capability> capabilities;
+  private ProtocolManager protocolManager;
+
   public Szlaban() {
     this.moduleManager = new ModuleManager(this);
+    this.capabilities = EnumSet.noneOf(Capability.class);
   }
 
   private void registerModules() {
@@ -89,6 +96,14 @@ public final class Szlaban extends JavaPlugin {
       saveDefaultConfig();
 
       // FUTURE WORK: add migration logic
+    }
+  }
+
+  @Override
+  public void onLoad() {
+    if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+      protocolManager = ProtocolLibrary.getProtocolManager();
+      capabilities.add(Capability.PROTOCOL_LIB);
     }
   }
 

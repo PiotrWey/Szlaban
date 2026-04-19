@@ -4,23 +4,8 @@
  */
 package dev.piotr_weychan.szlaban.behaviour;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class BehaviourContext {
-  private final JavaPlugin plugin;
-  private final ConfigurationSection config;
+import java.util.EnumSet;
 
-  public BehaviourContext(JavaPlugin plugin, ConfigurationSection config) {
-    this.plugin = plugin;
-    this.config = config;
-  }
-
-  public JavaPlugin getPlugin() {
-    return plugin;
-  }
-
-  public ConfigurationSection getConfig() {
-    return config;
-  }
-}
+public record BehaviourContext(JavaPlugin plugin, EnumSet<Capability> capabilities) {}
