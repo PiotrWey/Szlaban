@@ -40,11 +40,10 @@ advisories:
 firewall:
   # What engine to use for firewall management
   # Unless you have a specific configuration in mind, just use 'internal'
-  # Allowed values: internal, iptables, ufw
-  #   internal:  Use the plugin's internal connection filtering logic
-  #   iptables:  Apply blocking rules at the firewall level (iptables)
-  #   ufw:       Apply blocking rules at the firewall level (ufw)
-  engine: internal
+  # Allowed values: bukkit, protocollib
+  #   internal:     Use Bukkit's Event API for filtering connections
+  #   protocollib:  Use ProtocolLib for filtering connections (allows more filtering)
+  engine: protocollib
 
   # How to deal with blocked traffic
   # Allowed values: drop, log
@@ -118,3 +117,9 @@ firewall:
 fail2ban:
 
   # TODO: add config options
+
+# The following are internal settings not intended for use by normal users of the plugin.
+# You will NOT RECEIVE SUPPORT if you enable these without knowing what they do. Don't ask
+# for documentation. If you really want to know what these do, read the source code.
+_internal:
+  super-secret-setting: false

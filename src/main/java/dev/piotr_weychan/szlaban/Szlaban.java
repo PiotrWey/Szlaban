@@ -36,10 +36,10 @@ public final class Szlaban extends JavaPlugin {
   }
 
   private void registerModules() {
-    // TODO: add a list of all existing modules
-//    moduleManager.registerModule(
-//        "identifier", new Module()
-//    );
+    // register all modules here
+    moduleManager.registerModule(
+        "firewall", new FirewallModule(this, capabilities)
+    );
   }
 
   /**
