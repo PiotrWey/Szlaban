@@ -4,6 +4,10 @@
   <h1>Szlaban</h1>
 </div>
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PiotrWey/Szlaban/tests?style=plastic&logo=github)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/PiotrWey/Szlaban/total?style=plastic&logo=github)
+
+
 **Szlaban** is a multi-functional Minecraft server security plugin. It consists of multiple modules designed to help you
 secure your server against unauthorised activity. Featuring extensive configuration files, you can tweak the plugin to
 suit your needs.
@@ -45,6 +49,12 @@ following instructions are given as guidance, and may vary depending on where yo
 4. Upload the plugin jar that you downloaded in step 1
 5. Restart your server &ndash; Szlaban should now be loaded!
 
+### Additional Dependencies
+
+Szlaban works best when it's installed with its recommended dependencies. Download and install the plugins listed below
+onto your server:
+
+- [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
 
 ## Configuration
 

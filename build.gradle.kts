@@ -34,6 +34,7 @@ dependencies {
 
     // unit tests
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
 
     tasks {

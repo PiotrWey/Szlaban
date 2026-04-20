@@ -7,8 +7,6 @@ import dev.piotr_weychan.szlaban.firewall.model.CidrBlock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.net.InetAddress;
-
 public class FilterRuleEvaluatorTest {
   @Test
   public void testEvaluate() {
