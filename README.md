@@ -4,7 +4,7 @@
   <h1>Szlaban</h1>
 </div>
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PiotrWey/Szlaban/tests?style=plastic&logo=github)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PiotrWey/Szlaban/tests.yml?style=plastic&logo=github)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/PiotrWey/Szlaban/total?style=plastic&logo=github)
 
 
