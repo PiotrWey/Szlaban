@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2026 Piotr Weychan
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
 package dev.piotr_weychan.szlaban.firewall.filter;
 
 import com.google.common.net.InetAddresses;
@@ -9,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FilterRuleEvaluatorTest {
   @Test
-  public void testEvaluate() {
+  void ruleEvaluation() {
     PrefixTrie trie4 = new PrefixTrie();
     trie4.insertRule(new CidrBlock(InetAddresses.forString("192.168.0.0"), 16), RuleType.BLOCK);
 

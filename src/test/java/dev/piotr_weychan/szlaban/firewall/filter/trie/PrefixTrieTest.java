@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2026 Piotr Weychan
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
 package dev.piotr_weychan.szlaban.firewall.filter.trie;
 
 import com.google.common.net.InetAddresses;
@@ -9,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PrefixTrieTest {
   @Test
-  public void testSimpleMatching() {
+  void simpleMatching() {
     PrefixTrie trie = new PrefixTrie();
 
     CidrBlock block = new CidrBlock(InetAddresses.forString("192.168.1.1"), 32);
@@ -21,7 +25,7 @@ public class PrefixTrieTest {
   }
 
   @Test
-  public void testMultipleMatching() {
+  void multipleMatching() {
     PrefixTrie trie = new PrefixTrie();
 
     // test with CIDR ranges (local IPs)

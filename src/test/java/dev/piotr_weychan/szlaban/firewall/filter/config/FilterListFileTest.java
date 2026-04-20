@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2026 Piotr Weychan
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
 package dev.piotr_weychan.szlaban.firewall.filter.config;
 
 import com.google.common.net.InetAddresses;
@@ -17,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FilterListFileTest {
   @Test
-  public void testSimpleRead() throws IOException {
+  void simpleRead() throws IOException {
     File simpleFile = new File("src/test/resources/test-list.simple.txt");
 
     FilterListFile flf = new FilterListFile(simpleFile);
@@ -31,7 +35,7 @@ public class FilterListFileTest {
   }
 
   @Test
-  public void testCommentsRead() throws IOException {
+  void commentsRead() throws IOException {
     File simpleFile = new File("src/test/resources/test-list.comments.txt");
 
     FilterListFile flf = new FilterListFile(simpleFile);
@@ -46,7 +50,7 @@ public class FilterListFileTest {
   }
 
   @Test
-  public void testIpv6Read() throws IOException {
+  void ipv6Read() throws IOException {
     File simpleFile = new File("src/test/resources/test-list.ipv6.txt");
 
     FilterListFile flf = new FilterListFile(simpleFile);
@@ -60,7 +64,7 @@ public class FilterListFileTest {
   }
 
   @Test
-  public void testRangeAddRead() throws IOException {
+  void rangeAddRead() throws IOException {
     File simpleFile = new File("src/test/resources/test-list.range-add.txt");
 
     FilterListFile flf = new FilterListFile(simpleFile);
@@ -79,7 +83,7 @@ public class FilterListFileTest {
   }
 
   @Test
-  public void testRemoteRead() throws IOException, URISyntaxException {
+  void remoteRead() throws IOException, URISyntaxException {
     // try to read the simple file from remote
     URL url = new URI(
         "https://github.com/PiotrWey/Szlaban/raw/refs/heads/main/src/test/resources/test-list.simple.txt"
