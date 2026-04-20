@@ -35,6 +35,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // mocking framework
+    testImplementation("org.mockito:mockito-core:5.+")
     // libraries for tests
     testImplementation("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
 
@@ -69,6 +71,9 @@ dependencies {
 
         test {
             useJUnitPlatform()
+            jvmArgs(
+                "-XX:+EnableDynamicAgentLoading"
+            )
         }
     }
 }

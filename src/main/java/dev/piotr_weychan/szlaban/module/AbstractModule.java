@@ -11,6 +11,7 @@ import dev.piotr_weychan.szlaban.behaviour.Capability;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -42,10 +43,11 @@ public abstract class AbstractModule implements Module {
    */
   @Override
   public void onUnregister() {}
+
   /**
    * Register a behaviour, starting it if the plugin is enabled.
    */
-  protected void registerBehaviour(Behaviour behaviour) {
+  protected final void registerBehaviour(Behaviour behaviour) {
     behaviours.add(behaviour);
     if (enabled) {
       behaviour.start();
@@ -56,6 +58,7 @@ public abstract class AbstractModule implements Module {
    * Enable the module
    */
   @Override
+  @MustBeInvokedByOverriders
   public void enable() {
     if (enabled) return;
 
@@ -74,6 +77,7 @@ public abstract class AbstractModule implements Module {
    * Disable the module
    */
   @Override
+  @MustBeInvokedByOverriders
   public void disable() {
     if (!enabled) return;
 
