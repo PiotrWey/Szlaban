@@ -9,7 +9,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     java
     id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("com.gradleup.shadow") version "9.4.0"
+    id("com.gradleup.shadow") version "9.4.1"
 }
 
 group = project.property("group") as String
@@ -27,19 +27,25 @@ repositories {
 }
 
 dependencies {
-    // Paper API
+    // compile-against APIs
     compileOnly("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
-    // Protocollib
     compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
 
     // unit tests
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation(platform("org.junit:junit-bom:6.0.3"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // libraries for tests
     testImplementation("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
 
+
     tasks {
+        // run a server with the recommended dependencies
         named<RunServer>("runServer") {
             minecraftVersion(targetMcVersion)
+            downloadPlugins {
+                github("dmulloy2", "ProtocolLib", "5.4.0", "ProtocolLib.jar")
+            }
         }
 
         jar {
@@ -50,8 +56,10 @@ dependencies {
             }
         }
 
-        // all errors in this function are fake, it's just an attention seeker
-        shadowJar {
+        // Non-standard syntax. Due to bugs with how IntelliJ loads the ShadowJar plugin
+        // This should be replaced with the following line if it is fixed
+        // shadowJar {
+        named<ShadowJar>("shadowJar", ShadowJar::class) {
             manifest {
                 attributes(
                     "paperweight-mappings-namespace" to "mojang"
