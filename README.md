@@ -56,6 +56,7 @@ onto your server:
 
 - [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
 
+<!--
 ## Configuration
 
 The plugin is primarily configured using YAML, a simple, human-readable configuration language. If you haven't used YAML
@@ -111,9 +112,52 @@ experienced owner, you may just want to disable this module from loading in the 
 
 Some of these changes may change other config files (e.g. `server.properties`)<!--, in testing this didn't seem to cause
 any issues, but file IO can sometimes break-->. This functionality can be disabled in the config.
+-->
 
+## Developing
 
+Contributing to _Szlaban_ should be simple &ndash; just make sure you have the requirements, then follow the steps to
+get started!
 
+### Requirements
+
+- Java 21+
+- Gradle (works via wrapper)
+- ProtocolLib plugin JAR (optional: for testing)
+
+### Setup
+
+First, clone the repository and `cd` into the folder.
+
+```shell
+git clone https://github.com/PiotrWey/Szlaban.git && cd Szlaban
+```
+
+### Building
+
+This project uses Gradle as its build system. It will resolve all dependencies automatically, so you can build the
+project using the following command:
+
+```shell
+./gradlew build
+```
+
+### Testing
+
+Tests are written using JUnit 5, and can be run using Gradle:
+
+```shell
+./gradlew test
+```
+
+If you would like to manually test functionality on a server, the project includes a Gradle task for this:
+```shell
+./gradlew runServer
+```
+
+### Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contributor guidelines.
 
 
 
