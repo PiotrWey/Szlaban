@@ -5,12 +5,17 @@ on:
     paths:
       - "src/**"
       - "*.gradle.kts"
+      - ".github/workflows/tests.yml"
 
   pull_request:
     paths:
       - "src/**"
       - "*.gradle.kts"
+      - ".github/workflows/tests.yml"
 
+permissions:
+  contents: read
+  checks: write
 
 jobs:
   build:
@@ -39,6 +44,7 @@ jobs:
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
+          token: ${{ github.token }}
 
       - name: Upload Build Artefacts
         uses: actions/upload-artifact@v7
