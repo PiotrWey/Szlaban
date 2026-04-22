@@ -17,13 +17,12 @@ public class FilterRuleEvaluator implements RuleEvaluator {
     this.v6trie = v6trie;
   }
 
-  @Nullable
   public RuleType lookup(@NotNull InetAddress address) {
     if (address instanceof Inet4Address addr4) {
       return v4trie.getRuleType(addr4);
     } else if (address instanceof Inet6Address addr6) {
       return v6trie.getRuleType(addr6);
     }
-    return null;
+    return RuleType.DEFAULT;
   }
 }

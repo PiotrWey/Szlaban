@@ -41,8 +41,6 @@ public class PacketInterceptorBehaviour extends AbstractBehaviour {
           // get player's IP
           InetAddress address = event.getPlayer().getAddress().getAddress();
 
-          ctx.plugin().getSLF4JLogger().info("Received packet from " + address.getHostAddress());
-
           // evaluate rules
           for (RuleEvaluator ruleEvaluator : ruleEvaluators) {
             if (ruleEvaluator.lookup(address) == RuleType.BLOCK) {

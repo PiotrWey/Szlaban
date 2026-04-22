@@ -50,7 +50,7 @@ public final class FirewallModule extends AbstractModule {
 
     // read allowlist files
     for (String loc : Objects.requireNonNullElse(
-        firewallConfig.getStringList("allowlist"), new ArrayList<String>()
+        firewallConfig.getStringList("allowlists"), new ArrayList<String>()
     )) {
       try {
         allowLists.add(resolveFilterList(loc));
@@ -61,7 +61,7 @@ public final class FirewallModule extends AbstractModule {
 
     // read blocklist files
     for (String loc : Objects.requireNonNullElse(
-        firewallConfig.getStringList("blocklist"), new ArrayList<String>()
+        firewallConfig.getStringList("blocklists"), new ArrayList<String>()
     )) {
       try {
         blockLists.add(resolveFilterList(loc));
