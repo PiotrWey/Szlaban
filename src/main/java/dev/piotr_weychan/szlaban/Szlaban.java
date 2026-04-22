@@ -32,7 +32,6 @@ public final class Szlaban extends JavaPlugin {
   private final int configVersion = 1;
 
   private final EnumSet<Capability> capabilities;
-  private ProtocolManager protocolManager;
 
   public Szlaban() {
     this.moduleManager = new ModuleManager(this);
@@ -42,7 +41,7 @@ public final class Szlaban extends JavaPlugin {
   private void registerModules() {
     // register all modules here
     moduleManager.registerModule(
-        "firewall", new FirewallModule(this, capabilities)
+        "firewall", () -> new FirewallModule(this, capabilities)
     );
   }
 
@@ -105,10 +104,7 @@ public final class Szlaban extends JavaPlugin {
 
   @Override
   public void onLoad() {
-    if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
-      protocolManager = ProtocolLibrary.getProtocolManager();
-      capabilities.add(Capability.PROTOCOL_LIB);
-    }
+    if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) capabilities.add(Capability.PROTOCOL_LIB);
   }
 
   @Override

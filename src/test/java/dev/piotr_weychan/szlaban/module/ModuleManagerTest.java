@@ -8,6 +8,7 @@ package dev.piotr_weychan.szlaban.module;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import dev.piotr_weychan.szlaban.behaviour.Capability;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -55,11 +56,17 @@ public class ModuleManagerTest {
   void registrationLifecycleMethods() {
     ModuleManager mm = new ModuleManager(mockPlugin);
 
-    TestModule mod1 = new TestModule();
+    AtomicReference<TestModule> ref = new AtomicReference<>();
 
-    // did it register
-    mm.registerModule("mod1", mod1);
-    assertEquals(List.of("onRegister"), mod1.functionCalls);
+    // register the supplier, tracing the reference
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref.set(m);
+      return m;
+    });
+
+    // check if lifecycle events were called
+    assertEquals(List.of("onRegister"), ref.get().functionCalls);
 
   }
 
@@ -68,12 +75,18 @@ public class ModuleManagerTest {
   void unregistrationLifecycleMethods() {
     ModuleManager mm = new ModuleManager(mockPlugin);
 
-    TestModule mod1 = new TestModule();
+    AtomicReference<TestModule> ref = new AtomicReference<>();
 
-    mm.registerModule("mod1", mod1);
+    // register the supplier, tracing the reference
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref.set(m);
+      return m;
+    });
+    // unregister
     mm.unregisterModule("mod1");
 
-    assertEquals(List.of("onRegister", "disable", "onUnregister"), mod1.functionCalls);
+    assertEquals(List.of("onRegister", "disable", "onUnregister"), ref.get().functionCalls);
   }
 
   // test if we can access modules after registration
@@ -81,10 +94,15 @@ public class ModuleManagerTest {
   void moduleAccess() {
     ModuleManager mm = new ModuleManager(mockPlugin);
 
-    TestModule mod1 = new TestModule();
+    AtomicReference<TestModule> ref = new AtomicReference<>();
 
-    mm.registerModule("mod1", mod1);
-    assertEquals(mod1, mm.getModule("mod1"));
+    // register the supplier, tracing the reference
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref.set(m);
+      return m;
+    });
+    assertEquals(ref.get(), mm.getModule("mod1"));
   }
 
   // test that duplicate calls to module registration are ignored and do not overwrite
@@ -92,14 +110,23 @@ public class ModuleManagerTest {
   void duplicateRegistration() {
     ModuleManager mm = new ModuleManager(mockPlugin);
 
-    TestModule mod1 = new TestModule();
-    TestModule mod2 = new TestModule();
+    AtomicReference<TestModule> ref1 = new AtomicReference<>();
+    AtomicReference<TestModule> ref2 = new AtomicReference<>();
 
     // test override behaviour
-    mm.registerModule("mod1", mod1);
-    mm.registerModule("mod1", mod2);
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref1.set(m);
+      return m;
+    });
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref2.set(m);
+      return m;
+    });
 
-    assertEquals(mod1, mm.getModule("mod1"));
+    // assume that it's still referenced to ref1
+    assertEquals(ref1.get(), mm.getModule("mod1"));
   }
 
   // test behaviour if an invalid module is accessed
@@ -115,8 +142,14 @@ public class ModuleManagerTest {
   void removedModuleAccess() {
     ModuleManager mm = new ModuleManager(mockPlugin);
 
-    TestModule mod1 = new TestModule();
-    mm.registerModule("mod1", mod1);
+    AtomicReference<TestModule> ref = new AtomicReference<>();
+
+    // register the supplier, tracing the reference
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref.set(m);
+      return m;
+    });
     mm.unregisterModule("mod1");
 
     assertNull(mm.getModule("mod1"));
@@ -127,12 +160,21 @@ public class ModuleManagerTest {
   void noDuplicateRegistrationCalls() {
     ModuleManager mm = new ModuleManager(mockPlugin);
 
-    TestModule mod1 = new TestModule();
+    AtomicReference<TestModule> ref = new AtomicReference<>();
 
-    mm.registerModule("mod1", mod1);
-    mm.registerModule("mod1", mod1);
+    // register the supplier twice
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref.set(m);
+      return m;
+    });
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref.set(m);
+      return m;
+    });
 
-    assertEquals(List.of("onRegister"), mod1.functionCalls);
+    assertEquals(List.of("onRegister"), ref.get().functionCalls);
   }
 
 }

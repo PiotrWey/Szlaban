@@ -14,11 +14,15 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 
 public final class ModuleManager {
+  private final Map<String, Supplier<Module>> moduleSuppliers = new HashMap<>();
+  private final Map<String, Module> modules = new HashMap<>();
+
   private final JavaPlugin plugin;
-  private final HashMap<String, Module> modules = new HashMap<>();
 
   public ModuleManager(JavaPlugin plugin) {
     this.plugin = plugin;
@@ -27,13 +31,24 @@ public final class ModuleManager {
   /**
    * Safely register a new module without overwriting previously existing ones.
    * @param id the identifier that should be associated with the module
-   * @param module the instance of the module class
+   * @param supplier a supplier that creates module instances
    */
-  public void registerModule(String id, Module module) {
-    // Register the module in the map, ignoring if already present
+  public void registerModule(String id, Supplier<Module> supplier) {
+    // Register the module supplier in the map, ignoring if already present
+    if (moduleSuppliers.putIfAbsent(id, supplier) != null) return;
+
+    // Register a new instance of the module
+    createAndRegister(id);
+  }
+
+  private void createAndRegister(String id) {
+    Supplier<Module> supplier = moduleSuppliers.get(id);
+    if (supplier == null) return;
+
+    Module module = supplier.get();
+
     if (modules.putIfAbsent(id, module) != null) return;
 
-    // execute register logic
     module.onRegister();
   }
 
@@ -48,8 +63,20 @@ public final class ModuleManager {
     // Execute cleanup logic
     // Disable module first
     module.disable();
-    // Call the custom unregister logic
+    // Call unregistration hook
     module.onUnregister();
+  }
+
+  /**
+   * Reload the module with the specified id
+   * @param id the identifier for the module to reload
+   */
+  public void reloadModule(String id) {
+    Supplier<Module> supplier = moduleSuppliers.get(id);
+    if (supplier == null) return;
+
+    unregisterModule(id);
+    createAndRegister(id);
   }
 
   /**
