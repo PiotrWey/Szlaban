@@ -1,0 +1,37 @@
+               Additional Terms under GNU GPL-3.0 Section 7
+              ==============================================
+
+The following additional terms apply to this software per section 7 of
+the GNU General Public License v3.0, which is incorporated into the
+GNU Lesser General Public License v3.0 under which this software is
+licensed.
+
+b) All copies or substantial portions of this software must preserve
+   the following attribution notice in a prominent location visible to
+   most users prior to or at the point of download or installation
+   (such as the download page, store listing, or repository
+   description):
+
+   'Originally created by Piotr W. – https://github.com/PiotrWey/Szlaban'
+
+   Works that incorporate this software as a component or dependency
+   must include an acknowledgement in a prominent location (such as
+   the documentation, about screen, or credits) that the work uses
+   this software, with a link to https://github.com/PiotrWey/Szlaban.
+
+c) Modified versions of this software must be clearly marked as such,
+   must not be misrepresented as the original software, and must
+   include a clear and honest description of all changes made. Any
+   redistribution of this software, whether modified or unmodified,
+   must clearly indicate the original source at
+   https://github.com/PiotrWey/Szlaban and that the redistributed
+   version is not the original.
+
+d) The names, trademarks, or other identifiers of the original authors
+   may not be used to endorse or promote products derived from this
+   software without prior written permission.
+
+f) Anyone who conveys this software or modified versions thereof under
+   contractual assumptions of liability to any recipient must indemnify
+   the original authors against any liability arising from those
+   contractual assumptions.

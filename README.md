@@ -111,7 +111,7 @@ owners, though some automated setup prompts may prove useful for experienced adm
 experienced owner, you may just want to disable this module from loading in the first place.
 
 Some of these changes may change other config files (e.g. `server.properties`)<!--, in testing this didn't seem to cause
-any issues, but file IO can sometimes break-->. This functionality can be disabled in the config.
+any issues, but file IO can sometimes break-- >. This functionality can be disabled in the config.
 -->
 
 ## Developing
@@ -159,9 +159,14 @@ If you would like to manually test functionality on a server, the project includ
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contributor guidelines.
 
+_Szlaban_ has [documentation](docs/README.md)! Make sure to read it if you want to contribute
 
 
-## Planned features
+## Licence
+
+This project is licensed under the [GNU Lesser General Public License v3.0](LICENCE)
+with additional terms under GPL-3.0 section 7 – see [LICENCE.ADDITIONAL_TERMS](LICENCE.ADDITIONAL_TERMS)
+for details.
 
 
 ## Footnotes

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2026 Piotr Weychan
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ *
+ * Additional terms under GPL-3.0 section 7 apply – see LICENCE.ADDITIONAL_TERMS.
+ */
+
 package dev.piotr_weychan.szlaban.firewall.config;
 
 import dev.piotr_weychan.szlaban.firewall.model.CidrBlock;
@@ -5,10 +12,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
