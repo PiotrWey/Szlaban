@@ -39,11 +39,14 @@ public final class FilterListFile {
       BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
     ) {
       for (String line : reader.lines().toList()) {
-        // Ignore comments
-        if (!line.trim().startsWith("#")) {
+        // Ignore comments and blank lines
+        if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
           // Remove comments and surrounding whitespace
           String rawBlock = line.split("#", 2)[0].trim();
-          entries.add(CidrBlock.parse(rawBlock));
+          // Add the entry, or skip if it's invalid
+          try {
+            entries.add(CidrBlock.parse(rawBlock));
+          } catch (IllegalArgumentException ignored) { /* Ignore invalid CIDRs */ }
         }
       }
     }

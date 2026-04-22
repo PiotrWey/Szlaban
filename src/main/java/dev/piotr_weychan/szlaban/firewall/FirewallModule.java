@@ -9,10 +9,8 @@ package dev.piotr_weychan.szlaban.firewall;
 
 import dev.piotr_weychan.szlaban.behaviour.Capability;
 import dev.piotr_weychan.szlaban.firewall.config.FilterListFile;
-import dev.piotr_weychan.szlaban.firewall.filter.FilterRuleEvaluator;
-import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluator;
+import dev.piotr_weychan.szlaban.firewall.filter.*;
 import dev.piotr_weychan.szlaban.firewall.filter.trie.PrefixTrie;
-import dev.piotr_weychan.szlaban.firewall.filter.RuleType;
 import dev.piotr_weychan.szlaban.firewall.model.CidrBlock;
 import dev.piotr_weychan.szlaban.module.AbstractModule;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,7 +44,7 @@ public final class FirewallModule extends AbstractModule {
   /**
    * Read the configuration files and build the filter trie
    */
-  private RuleEvaluator buildFilterRule(@NotNull ConfigurationSection firewallConfig) {
+  private FilterRuleEvaluator buildFilterRule(@NotNull ConfigurationSection firewallConfig) {
     // Read blocklists and allowlists
     List<FilterListFile> allowLists = new ArrayList<>();
     List<FilterListFile> blockLists = new ArrayList<>();
@@ -96,6 +94,26 @@ public final class FirewallModule extends AbstractModule {
 
   }
 
+  private LookupRuleEvaluator buildLookupRule(@NotNull ConfigurationSection firewallConfig) {
+    ConfigurationSection filterConfig = Objects.requireNonNull(
+        firewallConfig.getConfigurationSection("advanced-block-filters")
+    );
+
+    String backend = Objects.requireNonNull(
+        firewallConfig.getString("_api-backend")
+    );
+
+    Map<String, Set<String>> rules = new HashMap<>();
+
+    // Populate filters
+    for (String key : filterConfig.getKeys(false)) {
+      rules.putIfAbsent(key, new HashSet<>(filterConfig.getStringList(key)));
+    }
+
+    return new LookupRuleEvaluator(rules, backend);
+
+  }
+
   @Override
   public void onRegister() {
     // populate the default configs
@@ -110,9 +128,8 @@ public final class FirewallModule extends AbstractModule {
     // read settings, setting defaults if not present
     String engine = Objects.requireNonNullElse(firewallConfig.getString("engine"), "protocollib");
     // advanced settings concerning IP lookup
+    // rest are loaded in FirewallModule#buildLookupRule
     boolean enableIpLookup = firewallConfig.getBoolean("enableIpLookup");
-    String ipApi = Objects.requireNonNullElse(firewallConfig.getString("_api-backend"), "https://ipwho.is/{}");
-    List<Map<?, ?>> advancedFilters = firewallConfig.getMapList("advanced-block-filters");
 
 
     // Check if ProtocolLib is present when we need it, otherwise fall back to internal engine
@@ -122,20 +139,25 @@ public final class FirewallModule extends AbstractModule {
     }
 
     // convert config into a nice set of filters
-    List<RuleEvaluator> ruleEvaluators = new ArrayList<>();
+    RuleEvaluatorChain chain = new RuleEvaluatorChain();
 
     // build filter lists from our config and add to evaluators
-    ruleEvaluators.add(buildFilterRule(firewallConfig));
+
+    chain.addRuleEvaluator(buildFilterRule(firewallConfig));
 
     if (enableIpLookup) {
-      // TODO: add IP lookup rule generation
+      try {
+        chain.addRuleEvaluator(buildLookupRule(firewallConfig));
+      } catch (NullPointerException e) {
+        plugin.getSLF4JLogger().error("Error while loading advanced block filters: {}", e.getMessage());
+      }
     }
 
     // register filter behaviours
     if (engine.equals("internal")) {
-      registerBehaviour(new LoginListenerBehaviour(behaviourContext, ruleEvaluators));
+      registerBehaviour(new LoginListenerBehaviour(behaviourContext, chain));
     } else if (engine.equals("protocollib")) {
-      registerBehaviour(new PacketInterceptorBehaviour(behaviourContext, ruleEvaluators));
+      registerBehaviour(new PacketInterceptorBehaviour(behaviourContext, chain));
     }
 
   }

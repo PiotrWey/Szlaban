@@ -15,5 +15,5 @@ public interface RuleEvaluator {
    * @param address the IP address to check against the filters
    * @return what action applies to the IP
    */
-  RuleType lookup(InetAddress address);
+  RuleType evaluate(InetAddress address) throws RuleEvaluationException;
 }

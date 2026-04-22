@@ -9,7 +9,8 @@ package dev.piotr_weychan.szlaban.firewall;
 
 import dev.piotr_weychan.szlaban.behaviour.BehaviourContext;
 import dev.piotr_weychan.szlaban.behaviour.ListenerBehaviour;
-import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluator;
+import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluationException;
+import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluatorChain;
 import dev.piotr_weychan.szlaban.firewall.filter.RuleType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,33 +18,30 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 import java.net.InetAddress;
-import java.util.List;
 
 public class LoginListenerBehaviour extends ListenerBehaviour {
-  private final List<RuleEvaluator> ruleEvaluators;
+  private final RuleEvaluatorChain chain;
 
-  public LoginListenerBehaviour(BehaviourContext ctx, List<RuleEvaluator> ruleEvaluators) {
+  public LoginListenerBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) {
     super(ctx);
-    this.ruleEvaluators = ruleEvaluators;
-  }
-
-  private boolean checkAddress(InetAddress address) {
-    // Check against all the rule evaluators
-    for (RuleEvaluator re : ruleEvaluators) {
-      if (re.lookup(address) == RuleType.BLOCK) {
-        return false;
-      }
-    }
-    return true;
-    // Connection OK!
+    this.chain = chain;
   }
 
   @EventHandler
   public void onConnectionCreate(AsyncPlayerPreLoginEvent event) {
     InetAddress address = event.getAddress();
 
+    RuleType result = null;
+
+    try {
+      result = chain.evaluate(address);
+    } catch (RuleEvaluationException e) {
+      ctx.plugin().getSLF4JLogger().error("Error while evaluating filter rule: {}", e.getMessage());
+      return;
+    }
+
     // Check address and fail
-    if (!checkAddress(address)) {
+    if (result == RuleType.BLOCK) {
       event.disallow(
           AsyncPlayerPreLoginEvent.Result.KICK_BANNED,
           Component

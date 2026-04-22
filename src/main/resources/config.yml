@@ -94,21 +94,22 @@ firewall:
 
   # Advanced filtering rules
   # The firewall will match these directly against the API output from the GeoIP database.
-  # For blocking multiple values, please create multiple filters. Yes this is inefficient
-  # but it's the best system there is for now.
-  # Please refer to the API docs for the selected IP info API
+  # The format consists of a key-value mapping, where all values in the provided lists will
+  # be checked against the key, which is a representation of the path in the JSON output
+  # demonstrated below.
   advanced-block-filters:
-  # - asn: 1234
-  # - country_code: GB
+    asn: &asn [ ]
+    connection.asn: *asn
+    country_code: [ ]
 
   # The API backend to use for IP info.
   # You may want to change this if you are hitting rate limits (429)
   # Just uncomment the other line, and comment the previous one.
 
   # More data, rate-limit 1 req/s. Docs: https://ipwhois.io/docs
-  _api-backend: 'https://ipwho.is/{}'
+  _api-backend: 'https://ipwho.is/%s'
   # Limited data, no specified rate-limit. Docs: https://seeip.org/
-  # _api-backend: 'https://api.seeip.org/geoip/{}'
+  # _api-backend: 'https://api.seeip.org/geoip/%s'
 
 
 

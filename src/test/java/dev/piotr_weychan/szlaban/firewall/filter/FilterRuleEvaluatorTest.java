@@ -22,7 +22,7 @@ public class FilterRuleEvaluatorTest {
 
     RuleEvaluator re = new FilterRuleEvaluator(trie4, trie6);
 
-    assertEquals(RuleType.BLOCK, re.lookup(InetAddresses.forString("192.168.1.1")));
-    assertEquals(RuleType.BLOCK, re.lookup(InetAddresses.forString("fc00::dead:beef")));
+    assertEquals(RuleType.BLOCK, re.evaluate(InetAddresses.forString("192.168.1.1")));
+    assertEquals(RuleType.BLOCK, re.evaluate(InetAddresses.forString("fc00::dead:beef")));
   }
 }

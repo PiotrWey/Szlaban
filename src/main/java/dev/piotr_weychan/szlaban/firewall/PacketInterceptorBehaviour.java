@@ -14,7 +14,8 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import dev.piotr_weychan.szlaban.behaviour.AbstractBehaviour;
 import dev.piotr_weychan.szlaban.behaviour.BehaviourContext;
-import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluator;
+import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluationException;
+import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluatorChain;
 import dev.piotr_weychan.szlaban.firewall.filter.RuleType;
 
 import java.net.InetAddress;
@@ -24,11 +25,11 @@ public class PacketInterceptorBehaviour extends AbstractBehaviour {
 
   private PacketAdapter packetAdapter;
   private final List<PacketType> packetTypes;
-  private final List<RuleEvaluator> ruleEvaluators;
+  private final RuleEvaluatorChain chain;
 
-  public PacketInterceptorBehaviour(BehaviourContext ctx, List<RuleEvaluator> ruleEvaluators) {
+  public PacketInterceptorBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) {
     super(ctx);
-    this.ruleEvaluators = ruleEvaluators;
+    this.chain = chain;
     // hardcoded filter packets
     packetTypes = new ArrayList<>();
     // add all packet types we should filter
@@ -48,14 +49,20 @@ public class PacketInterceptorBehaviour extends AbstractBehaviour {
           // get player's IP
           InetAddress address = event.getPlayer().getAddress().getAddress();
 
-          // evaluate rules
-          for (RuleEvaluator ruleEvaluator : ruleEvaluators) {
-            if (ruleEvaluator.lookup(address) == RuleType.BLOCK) {
+          RuleType result = null;
+
+          try {
+            result = chain.evaluate(address);
+          } catch (RuleEvaluationException e) {
+            ctx.plugin().getSLF4JLogger().error("Error while evaluating filter rule: {}", e.getMessage());
+            return;
+          }
+
+          // Check address and fail
+          if (result == RuleType.BLOCK) {
               // block the connection
               event.setCancelled(true);
-              ctx.plugin().getSLF4JLogger().info("Blocked packet from " + address.getHostAddress());
-              return;
-            }
+              ctx.plugin().getSLF4JLogger().info("Blocked packet from {}", address.getHostAddress());
           }
           // all good!
         }
