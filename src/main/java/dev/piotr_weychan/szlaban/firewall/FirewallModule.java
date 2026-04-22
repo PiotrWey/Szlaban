@@ -99,8 +99,8 @@ public final class FirewallModule extends AbstractModule {
   @Override
   public void onRegister() {
     // populate the default configs
-    plugin.saveResource("allowlist.txt", false);
-    plugin.saveResource("blocklist.txt", false);
+    plugin.saveResource("allowlist.cfg", false);
+    plugin.saveResource("blocklist.cfg", false);
 
     // store the config
     ConfigurationSection firewallConfig = Objects.requireNonNull(

@@ -59,7 +59,7 @@ firewall:
   # - Local file paths are relative to the plugin's config directory
   #     i.e. plugins/Szlaban/
   blocklists:
-    - blocklist.txt
+    - blocklist.cfg
     - https://github.com/pebblehost/hunter/raw/refs/heads/master/ips.txt
 
   # A list of files containing IPs/CIDR ranges that should always be allowed
@@ -69,7 +69,7 @@ firewall:
   # While there isn't a deny-all mode by default, this can be achieved quite easily
   # by adding 0.0.0.0/0 and ::/0 to your blocklists.
   allowlists:
-    - allowlist.txt
+    - allowlist.cfg
 
   # How often (in seconds) the plugin should automatically re-read the contents of
   # each kind of blocklist file.
