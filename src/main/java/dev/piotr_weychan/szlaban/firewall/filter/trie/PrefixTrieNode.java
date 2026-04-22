@@ -22,12 +22,6 @@ public class PrefixTrieNode {
 
   private RuleType ruleType;
 
-  public PrefixTrieNode(@Nullable PrefixTrieNode zero, @Nullable PrefixTrieNode one, RuleType ruleType) {
-    this(ruleType);
-    this.zero = zero;
-    this.one = one;
-  }
-
   public PrefixTrieNode(@Nullable RuleType ruleType) {
     this.ruleType = Objects.requireNonNullElse(ruleType, RuleType.DEFAULT);
   }

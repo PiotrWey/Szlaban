@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.HashMap;
 import java.util.List;
 
+
 public final class ModuleManager {
   private final JavaPlugin plugin;
   private final HashMap<String, Module> modules = new HashMap<>();

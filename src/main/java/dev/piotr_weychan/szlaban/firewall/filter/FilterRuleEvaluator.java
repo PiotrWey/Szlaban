@@ -9,7 +9,6 @@ package dev.piotr_weychan.szlaban.firewall.filter;
 
 import dev.piotr_weychan.szlaban.firewall.filter.trie.PrefixTrie;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;

@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class LookupRuleEvaluator implements RuleEvaluator {
-  private List<Map<String, String>> rules;
-  private String apiEndpoint;
+  private final List<Map<String, String>> rules;
+  private final String apiEndpoint;
 
   public LookupRuleEvaluator(List<Map<String, String>> rules, String apiEndpoint) {
     this.rules = rules;

@@ -25,8 +25,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 
+@SuppressWarnings("unused") // Plugin
 public final class Szlaban extends JavaPlugin {
   private final ModuleManager moduleManager;
+  @SuppressWarnings("FieldCanBeLocal")
   private final int configVersion = 1;
 
   private final EnumSet<Capability> capabilities;
@@ -58,7 +60,7 @@ public final class Szlaban extends JavaPlugin {
       if (module == null) {
         getSLF4JLogger().error("Failed to lode module '{}': Not found", key);
         continue;
-      };
+      }
       // enable module if config says so
       if (moduleCfg.getBoolean(key)) module.enable();
       // otherwise disable it

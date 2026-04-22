@@ -58,7 +58,7 @@ public final class PrefixTrie extends PrefixTrieNode{
         if (depth == block.prefixLength()) {
           node.setRuleType(ruleType);
           return;
-        };
+        }
         // get the next bit
         int bit = ((b & 0xff) >> i) & 1;
 

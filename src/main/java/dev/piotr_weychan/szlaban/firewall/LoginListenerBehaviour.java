@@ -13,10 +13,8 @@ import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluator;
 import dev.piotr_weychan.szlaban.firewall.filter.RuleType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.server.ServerListPingEvent;
 
 import java.net.InetAddress;
 import java.util.List;
