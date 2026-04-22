@@ -1,0 +1,7 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="allowReplaceRegexp" value="true" />
+    <option name="notice" value="Copyright (c) &amp;#36;originalComment.match(&quot;Copyright \(c\) (\d+)&quot;, 1, &quot;-&quot;, &quot;&amp;#36;today.year &quot;)&amp;#36;today.year Piotr Weychan&#10;SPDX-License-Identifier: LGPL-3.0-or-later&#10;&#10;Additional terms under GPL-3.0 section 7 apply – see LICENCE.ADDITIONAL_TERMS." />
+    <option name="myName" value="Szlaban-LGPL-3.0-or-later" />
+  </copyright>
+</component>

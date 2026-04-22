@@ -1,5 +1,7 @@
 # User-specific stuff
-.idea/
+.idea/*
+# allow copyright notice
+!.idea/copyright/
 
 *.iml
 *.ipr
