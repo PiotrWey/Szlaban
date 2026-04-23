@@ -19,6 +19,7 @@ import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluatorChain;
 import dev.piotr_weychan.szlaban.firewall.filter.RuleType;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.*;
 
 public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
@@ -45,12 +46,12 @@ public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
   public void start() {
     ctx.plugin().getSLF4JLogger().info("Starting PacketInterceptorBehaviour");
 
-      packetAdapter = new PacketAdapter(ctx.plugin(), ListenerPriority.NORMAL, packetTypes) {
+      packetAdapter = new PacketAdapter(ctx.plugin(), ListenerPriority.HIGH, packetTypes) {
         private void handleEvent(PacketEvent event, String direction) {
-          // get player's IP
-          InetAddress address = Objects.requireNonNull(
-              event.getPlayer().getAddress()
-          ).getAddress();
+          // get player's IP (null-safe)
+          InetSocketAddress sockAddr = event.getPlayer().getAddress();
+          if (sockAddr == null) return;
+          InetAddress address = sockAddr.getAddress();
 
           RuleType result;
 
