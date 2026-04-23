@@ -1,5 +1,4 @@
 import xyz.jpenilla.runpaper.task.RunServer
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
   java
@@ -57,10 +56,7 @@ tasks {
     }
   }
 
-  // Non-standard syntax. Due to bugs with how IntelliJ loads the ShadowJar plugin
-  // This should be replaced with the following line if it is fixed
   shadowJar {
-//    named<ShadowJar>("shadowJar", ShadowJar::class) {
     manifest {
       attributes(
         "paperweight-mappings-namespace" to "mojang"
@@ -81,40 +77,40 @@ tasks {
 val targetJavaVersion = 21
 
 java {
-val javaVersion = JavaVersion.toVersion(targetJavaVersion)
-sourceCompatibility = javaVersion
-targetCompatibility = javaVersion
+  val javaVersion = JavaVersion.toVersion(targetJavaVersion)
+  sourceCompatibility = javaVersion
+  targetCompatibility = javaVersion
 
-if (JavaVersion.current() < javaVersion) {
-toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersion))
-}
+  if (JavaVersion.current() < javaVersion) {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersion))
+  }
 }
 
 tasks.withType<JavaCompile>().configureEach {
-options.encoding = "UTF-8"
+  options.encoding = "UTF-8"
 
-if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) {
-options.release.set(targetJavaVersion)
-}
+  if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) {
+    options.release.set(targetJavaVersion)
+  }
 }
 
 tasks.processResources {
 // dynamic for the plugin.json
-val props = mapOf(
-"version" to version,
-"name" to project.property("name") as String,
-"description" to project.property("description") as String,
-"website" to project.property("website") as String,
-"authors" to (project.property("authors") as String).trim('[', ']').split(","),
-"contributors" to (project.property("contributors") as String).trim('[', ']').split(","),
-"main" to project.property("main") as String,
-"prefix" to project.property("prefix") as String,
-"api_version" to targetMcVersion,
-)
-inputs.properties(props)
-filteringCharset = "UTF-8"
+  val props = mapOf(
+    "version" to version,
+    "name" to project.property("name") as String,
+    "description" to project.property("description") as String,
+    "website" to project.property("website") as String,
+    "authors" to (project.property("authors") as String).trim('[', ']').split(","),
+    "contributors" to (project.property("contributors") as String).trim('[', ']').split(","),
+    "main" to project.property("main") as String,
+    "prefix" to project.property("prefix") as String,
+    "api_version" to targetMcVersion,
+  )
+  inputs.properties(props)
+  filteringCharset = "UTF-8"
 
-filesMatching("plugin.yml") {
-expand(props)
-}
+  filesMatching("plugin.yml") {
+    expand(props)
+  }
 }
