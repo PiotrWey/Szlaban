@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FilterListFileTest {
+class FilterListFileTest {
   @Test
   void simpleRead() throws IOException {
     File simpleFile = new File("src/test/resources/test-list.simple.txt");
@@ -29,7 +29,7 @@ public class FilterListFileTest {
     List<CidrBlock> entries = flf.getEntries();
 
     List<CidrBlock> expectedEntries = new ArrayList<>();
-    expectedEntries.add(new CidrBlock(InetAddresses.forString("192.168.1.1"), 32));
+    expectedEntries.add(CidrBlock.parse("192.168.1.1/32"));
 
     assertEquals(expectedEntries, entries);
   }
@@ -43,8 +43,8 @@ public class FilterListFileTest {
     List<CidrBlock> entries = flf.getEntries();
 
     List<CidrBlock> expectedEntries = new ArrayList<>();
-    expectedEntries.add(new CidrBlock(InetAddresses.forString("192.168.0.1"), 32));
-    expectedEntries.add(new CidrBlock(InetAddresses.forString("192.168.0.3"), 32));
+    expectedEntries.add(CidrBlock.parse("192.168.0.1/32"));
+    expectedEntries.add(CidrBlock.parse("192.168.0.3/32"));
 
     assertEquals(expectedEntries, entries);
   }
@@ -58,7 +58,7 @@ public class FilterListFileTest {
     List<CidrBlock> entries = flf.getEntries();
 
     List<CidrBlock> expectedEntries = new ArrayList<>();
-    expectedEntries.add(new CidrBlock(InetAddresses.forString("fc00::"), 7));
+    expectedEntries.add(CidrBlock.parse("fc00::/7"));
 
     assertEquals(expectedEntries, entries);
   }
@@ -73,8 +73,8 @@ public class FilterListFileTest {
 
     List<CidrBlock> expectedEntries = new ArrayList<>();
     // v4
-    expectedEntries.add(new CidrBlock(InetAddresses.forString("12.34.56.78"), 32));
-    expectedEntries.add(new CidrBlock(InetAddresses.forString("12.34.56.79"), 32));
+    expectedEntries.add(CidrBlock.parse("12.34.56.78/32"));
+    expectedEntries.add(CidrBlock.parse("12.34.56.79/32"));
     // v6
     expectedEntries.add(new CidrBlock(InetAddresses.forString("dead:beef::"), 128));
     expectedEntries.add(new CidrBlock(InetAddresses.forString("dead:beef::1"), 128));
@@ -93,7 +93,7 @@ public class FilterListFileTest {
 
     List<CidrBlock> entries = flf.getEntries();
     List<CidrBlock> expectedEntries = new ArrayList<>();
-    expectedEntries.add(new CidrBlock(InetAddresses.forString("192.168.1.1"), 32));
+    expectedEntries.add(CidrBlock.parse("192.168.1.1/32"));
 
     assertEquals(expectedEntries, entries);
   }

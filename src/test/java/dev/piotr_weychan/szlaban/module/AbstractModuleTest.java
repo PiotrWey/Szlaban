@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AbstractModuleTest {
+class AbstractModuleTest {
   protected static final JavaPlugin mockPlugin = mock(JavaPlugin.class);
 
   private static class TestBehaviour extends AbstractBehaviour {

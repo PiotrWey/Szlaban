@@ -11,12 +11,12 @@ import dev.piotr_weychan.szlaban.firewall.model.CidrBlock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PrefixTrieTest {
+class PrefixTrieTest {
   @Test
   void simpleMatching() {
     PrefixTrie trie = new PrefixTrie();
 
-    CidrBlock block = new CidrBlock(InetAddresses.forString("192.168.1.1"), 32);
+    CidrBlock block = CidrBlock.parse("192.168.1.1/32");
 
     trie.insertRule(block, RuleType.BLOCK);
 
@@ -29,12 +29,12 @@ public class PrefixTrieTest {
     PrefixTrie trie = new PrefixTrie();
 
     // test with CIDR ranges (local IPs)
-    trie.insertRule(new CidrBlock(InetAddresses.forString("192.168.0.0"), 16), RuleType.BLOCK);
-    trie.insertRule(new CidrBlock(InetAddresses.forString("172.16.0.0"), 12), RuleType.BLOCK);
-    trie.insertRule(new CidrBlock(InetAddresses.forString("10.0.0.0"), 8), RuleType.BLOCK);
+    trie.insertRule(CidrBlock.parse("192.168.0.0/16"), RuleType.BLOCK);
+    trie.insertRule(CidrBlock.parse("172.16.0.0/12"), RuleType.BLOCK);
+    trie.insertRule(CidrBlock.parse("10.0.0.0/8"), RuleType.BLOCK);
 
     // allow 192.168.1.0/24 through
-    trie.insertRule(new CidrBlock(InetAddresses.forString("192.168.1.0"), 24), RuleType.ALLOW);
+    trie.insertRule(CidrBlock.parse("192.168.1.0/24"), RuleType.ALLOW);
 
     // test all cases
     assertEquals(RuleType.ALLOW, trie.getRuleType(InetAddresses.forString("192.168.1.1")));

@@ -17,7 +17,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-public class ModuleManagerTest {
+@SuppressWarnings("WriteOnlyObject")
+class ModuleManagerTest {
   protected static final JavaPlugin mockPlugin = mock(JavaPlugin.class);
 
   // test module for testing
