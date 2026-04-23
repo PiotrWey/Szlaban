@@ -36,6 +36,24 @@ public abstract class AbstractModule implements Module {
   }
 
   /**
+   * Get the human-readable name for the module
+   * @return the module name
+   */
+  @Override
+  public String getName() {
+    return this.getClass().getSimpleName();
+  }
+
+  /**
+   * Get the module's description
+   * @return the description
+   */
+  @Override
+  public String getDescription() {
+    return this.getName();
+  }
+
+  /**
    * Called when the module is registered, may be used as an alternative to the constructor.
    */
   @Override

@@ -8,6 +8,8 @@
 package dev.piotr_weychan.szlaban.module;
 
 public interface Module {
+  String getName();
+  String getDescription();
   void enable();
   void disable();
   boolean isEnabled();

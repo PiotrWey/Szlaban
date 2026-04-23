@@ -7,13 +7,13 @@
 
 package dev.piotr_weychan.szlaban;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import dev.piotr_weychan.szlaban.behaviour.Capability;
+import dev.piotr_weychan.szlaban.command.ConfigurationCommand;
 import dev.piotr_weychan.szlaban.firewall.FirewallModule;
 import dev.piotr_weychan.szlaban.module.Module;
 import dev.piotr_weychan.szlaban.module.ModuleManager;
 
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,6 +42,17 @@ public final class Szlaban extends JavaPlugin {
     // register all modules here
     moduleManager.registerModule(
         "firewall", () -> new FirewallModule(this, capabilities)
+    );
+  }
+
+  @SuppressWarnings("UnstableApiUsage")
+  private void registerCommands() {
+    // register all commands here
+    ConfigurationCommand cfgCommand = new ConfigurationCommand(this, moduleManager);
+
+    this.getLifecycleManager().registerEventHandler(
+        LifecycleEvents.COMMANDS,
+        commands -> commands.registrar().register(cfgCommand.szlabanConfig("szlaban"))
     );
   }
 
@@ -121,7 +132,7 @@ public final class Szlaban extends JavaPlugin {
     registerModules();
     loadModules();
 
-
+    registerCommands();
 
   }
 

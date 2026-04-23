@@ -41,6 +41,18 @@ public final class FirewallModule extends AbstractModule {
     return new FilterListFile(file);
   }
 
+  @Override
+  @NotNull
+  public String getName() {
+    return "Firewall";
+  }
+
+  @Override
+  @NotNull
+  public String getDescription() {
+    return "An advanced configurable firewall system.";
+  }
+
   /**
    * Read the configuration files and build the filter trie
    */
