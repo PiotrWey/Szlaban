@@ -14,8 +14,12 @@ import dev.piotr_weychan.szlaban.module.Module;
 import dev.piotr_weychan.szlaban.module.ModuleManager;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bstats.charts.AdvancedBarChart;
+import org.bstats.charts.SimpleBarChart;
+import org.bstats.charts.SimplePie;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bstats.bukkit.Metrics;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,6 +27,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @SuppressWarnings("unused") // Plugin
@@ -53,6 +59,26 @@ public final class Szlaban extends JavaPlugin {
     this.getLifecycleManager().registerEventHandler(
         LifecycleEvents.COMMANDS,
         commands -> commands.registrar().register(cfgCommand.szlabanConfig("szlaban"))
+    );
+  }
+
+  private void registerBStats() {
+    // plugin id, do not change
+    final int pluginId = 30910;
+    Metrics metrics = new Metrics(this, pluginId);
+
+    // what modules are people using?
+    metrics.addCustomChart(
+        new AdvancedBarChart("modules", () -> {
+          Map<String, int[]> map = new HashMap<>();
+          int[] enabled = new int[]{0, 1};
+          int[] disabled = new int[]{1, 0};
+
+          for (Module module : moduleManager.getModules()) {
+            map.put(module.getName(), module.isEnabled() ? enabled : disabled);
+          }
+          return map;
+        })
     );
   }
 
@@ -133,6 +159,8 @@ public final class Szlaban extends JavaPlugin {
     loadModules();
 
     registerCommands();
+
+    registerBStats();
 
   }
 

@@ -29,6 +29,9 @@ dependencies {
   // compileOnly("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
   compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
 
+  // implementation apis
+  implementation("org.bstats:bstats-bukkit:3.2.1")
+
   // unit tests
   testImplementation(platform("org.junit:junit-bom:6.0.3"))
   testImplementation("org.junit.jupiter:junit-jupiter")
@@ -43,6 +46,8 @@ tasks {
   // run a server with the recommended dependencies
   named<RunServer>("runServer") {
     minecraftVersion(targetMcVersion)
+    // disable bstats to avoid counting development instances
+    jvmArgs("-Dbstats.enabled=false")
     downloadPlugins {
       github("dmulloy2", "ProtocolLib", "5.4.0", "ProtocolLib.jar")
     }
@@ -62,6 +67,9 @@ tasks {
         "paperweight-mappings-namespace" to "mojang"
       )
     }
+    // Relocate bStats into the plugin's package to avoid conflicts with other
+    // plugins using bStats
+    relocate("org.bstats", project.group.toString())
   }
 
   test {
