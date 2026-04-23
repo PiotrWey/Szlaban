@@ -21,13 +21,13 @@ import dev.piotr_weychan.szlaban.firewall.filter.RuleType;
 import java.net.InetAddress;
 import java.util.*;
 
-public class PacketInterceptorBehaviour extends AbstractBehaviour {
+public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
 
   private PacketAdapter packetAdapter;
   private final List<PacketType> packetTypes;
   private final RuleEvaluatorChain chain;
 
-  public PacketInterceptorBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) {
+  public ProtocolLibFilterBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) {
     super(ctx);
     this.chain = chain;
     // hardcoded filter packets
@@ -35,6 +35,8 @@ public class PacketInterceptorBehaviour extends AbstractBehaviour {
     // add all packet types we should filter
     packetTypes.add(PacketType.Status.Client.PING);
     packetTypes.add(PacketType.Status.Client.START);
+    packetTypes.add(PacketType.Status.Server.SERVER_INFO);
+    packetTypes.add(PacketType.Configuration.Client.CLIENT_INFORMATION);
     packetTypes.add(PacketType.Handshake.Client.SET_PROTOCOL);
     packetTypes.add(PacketType.Login.Client.START);
   }
@@ -44,8 +46,7 @@ public class PacketInterceptorBehaviour extends AbstractBehaviour {
     ctx.plugin().getSLF4JLogger().info("Starting PacketInterceptorBehaviour");
 
       packetAdapter = new PacketAdapter(ctx.plugin(), ListenerPriority.NORMAL, packetTypes) {
-        @Override
-        public void onPacketReceiving(PacketEvent event) {
+        private void handleEvent(PacketEvent event, String direction) {
           // get player's IP
           InetAddress address = event.getPlayer().getAddress().getAddress();
 
@@ -58,14 +59,22 @@ public class PacketInterceptorBehaviour extends AbstractBehaviour {
             return;
           }
 
+          ctx.plugin().getSLF4JLogger().debug("Caught {} packet from {}", direction, address.getHostAddress());
+
           // Check address and fail
           if (result == RuleType.BLOCK) {
-              // block the connection
-              event.setCancelled(true);
-              ctx.plugin().getSLF4JLogger().info("Blocked packet from {}", address.getHostAddress());
+            // block the connection
+            event.setCancelled(true);
+            ctx.plugin().getSLF4JLogger().info("Blocked {} packet from {}", direction, address.getHostAddress());
           }
           // all good!
         }
+
+        @Override
+        public void onPacketReceiving(PacketEvent event) { handleEvent(event, "inbound"); }
+
+        @Override
+        public void onPacketSending(PacketEvent event) { handleEvent(event, "outbound"); }
       };
 
     ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);

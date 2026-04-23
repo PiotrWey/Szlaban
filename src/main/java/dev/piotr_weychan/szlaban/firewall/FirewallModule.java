@@ -128,9 +128,11 @@ public final class FirewallModule extends AbstractModule {
 
   @Override
   public void onRegister() {
-    // populate the default configs
-    plugin.saveResource("allowlist.cfg", false);
-    plugin.saveResource("blocklist.cfg", false);
+    // populate the default configs if not present
+    if (!new File(plugin.getDataFolder(), "allowlist.cfg").exists())
+      plugin.saveResource("allowlist.cfg", false);
+    if (!new File(plugin.getDataFolder(), "blocklist.cfg").exists())
+      plugin.saveResource("blocklist.cfg", false);
 
     // store the config
     ConfigurationSection firewallConfig = Objects.requireNonNull(
@@ -142,13 +144,6 @@ public final class FirewallModule extends AbstractModule {
     // advanced settings concerning IP lookup
     // rest are loaded in FirewallModule#buildLookupRule
     boolean enableIpLookup = firewallConfig.getBoolean("enableIpLookup");
-
-
-    // Check if ProtocolLib is present when we need it, otherwise fall back to internal engine
-    if (!capabilities.contains(Capability.PROTOCOL_LIB) && engine.equals("protocollib")) {
-      plugin.getSLF4JLogger().error("ProtocolLib not available, falling back to internal engine");
-      engine = "internal";
-    }
 
     // convert config into a nice set of filters
     RuleEvaluatorChain chain = new RuleEvaluatorChain();
@@ -165,11 +160,30 @@ public final class FirewallModule extends AbstractModule {
       }
     }
 
-    // register filter behaviours
-    if (engine.equals("internal")) {
-      registerBehaviour(new LoginListenerBehaviour(behaviourContext, chain));
-    } else if (engine.equals("protocollib")) {
-      registerBehaviour(new PacketInterceptorBehaviour(behaviourContext, chain));
+    // Register filter behaviours, with fallback logic
+    // IMPORTANT MAINTENANCE NOTICE: this uses fall-through logic. The design is intentional.
+    switch (engine) {
+      case "internal":
+        // Attempt to use internal behaviour. This is the most effective, but also reported to be unstable!
+        try {
+          registerBehaviour(new InternalFilterBehaviour(behaviourContext, chain));
+          break;
+        } catch (IllegalStateException e) { // If creating this fails, we fall through (break is not called)
+          plugin.getSLF4JLogger().error("Failed to register InternalFilterBehaviour: {}", e.getMessage());
+        };
+      case "protocollib":
+        // ProtocolLib does not allow blocking EVERY SINGLE in/outbound connection
+        if (capabilities.contains(Capability.PROTOCOL_LIB)) {
+          registerBehaviour(new ProtocolLibFilterBehaviour(behaviourContext, chain));
+          break;
+        } else {
+          // Fall through to next if protocol lib was not found
+          plugin.getSLF4JLogger().error("ProtocolLib not available, falling back to event engine");
+        }
+      case "event":
+        // Highest compatibility, lowest effectiveness
+        registerBehaviour(new EventListenerFilterBehaviour(behaviourContext, chain));
+        break;
     }
 
   }

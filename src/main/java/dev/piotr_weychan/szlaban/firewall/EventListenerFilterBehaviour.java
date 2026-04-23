@@ -7,6 +7,7 @@
 
 package dev.piotr_weychan.szlaban.firewall;
 
+import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import dev.piotr_weychan.szlaban.behaviour.BehaviourContext;
 import dev.piotr_weychan.szlaban.behaviour.ListenerBehaviour;
 import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluationException;
@@ -19,10 +20,10 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 import java.net.InetAddress;
 
-public class LoginListenerBehaviour extends ListenerBehaviour {
+public class EventListenerFilterBehaviour extends ListenerBehaviour {
   private final RuleEvaluatorChain chain;
 
-  public LoginListenerBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) {
+  public EventListenerFilterBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) {
     super(ctx);
     this.chain = chain;
   }
@@ -48,18 +49,30 @@ public class LoginListenerBehaviour extends ListenerBehaviour {
               .text("You have been blocked from connecting to this server. Please contact an administrator.\n")
               .color(NamedTextColor.RED)
       );
+      ctx.plugin().getSLF4JLogger().info("Disallowed login for {}", address.getHostAddress());
     }
   }
 
-  // ServerListPingEvents are not cancellable
-//  @EventHandler
-//  public void onServerListPing(ServerListPingEvent event) {
-//    InetAddress address = event.getAddress();
-//
-//    event.setMaxPlayers(0);
-//    event.motd(Component.text(""));
-//    event.
-//
+  // use paper's server list ping event
+  @EventHandler
+  public void onServerListPing(PaperServerListPingEvent event) {
+    InetAddress address = event.getAddress();
+
+    RuleType result = null;
+
+    try {
+      result = chain.evaluate(address);
+    } catch (RuleEvaluationException e) {
+      ctx.plugin().getSLF4JLogger().error("Error while evaluating filter rule: {}", e.getMessage());
+      return;
+    }
+
+    if (result == RuleType.BLOCK) {
+      event.setCancelled(true);
+      ctx.plugin().getSLF4JLogger().info("Blocked PaperServerListPingEvent from {}", address.getHostAddress());
+    }
+  }
+
 //
 //  }
 }
