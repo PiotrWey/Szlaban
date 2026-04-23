@@ -23,7 +23,7 @@ public class PrefixTrieNode {
   private RuleType ruleType;
 
   public PrefixTrieNode(@Nullable RuleType ruleType) {
-    this.ruleType = Objects.requireNonNullElse(ruleType, RuleType.DEFAULT);
+    this.ruleType = Objects.requireNonNullElse(ruleType, RuleType.CONTINUE);
   }
 
   public PrefixTrieNode() {

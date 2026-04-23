@@ -40,10 +40,11 @@ advisories:
 firewall:
   # What engine to use for firewall management
   # Unless you have a specific configuration in mind, just use 'internal'
-  # Allowed values: bukkit, protocollib
-  #   internal:     Use Bukkit's Event API for filtering connections
-  #   protocollib:  Use ProtocolLib for filtering connections (allows more filtering)
-  engine: protocollib
+  # Allowed values: internal, protocollib, event
+  #   internal:     Uses PaperMC's internals for filtering ALL packets - most powerful, completely rejects everything
+  #   protocollib:  Use ProtocolLib for filtering connections - good fallback, will block MOST connections
+  #   event:        Use Bukkit's Event API for filtering connections - rejects certain classes of login/status ping events
+  engine: internal
 
   # How to deal with blocked traffic
   # Allowed values: drop, log

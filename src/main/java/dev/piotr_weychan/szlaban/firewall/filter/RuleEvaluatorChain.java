@@ -36,15 +36,16 @@ public final class RuleEvaluatorChain implements RuleEvaluator {
     }
 
     // evaluate rules in order
+    // exit early if we have an explicit result
     for (RuleEvaluator evaluator : evaluators) {
       RuleType ruleType = evaluator.evaluate(address);
-      if (ruleType == RuleType.BLOCK) {
+      if (ruleType != RuleType.CONTINUE) {
         cache.put(address, ruleType);
         return ruleType;
       }
     }
 
-    cache.put(address, RuleType.DEFAULT);
-    return RuleType.DEFAULT;
+    cache.put(address, RuleType.CONTINUE);
+    return RuleType.CONTINUE;
   }
 }

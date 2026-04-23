@@ -21,7 +21,7 @@ public class PrefixTrieTest {
     trie.insertRule(block, RuleType.BLOCK);
 
     assertEquals(RuleType.BLOCK, trie.getRuleType(InetAddresses.forString("192.168.1.1")));
-    assertEquals(RuleType.DEFAULT, trie.getRuleType(InetAddresses.forString("192.168.1.2")));
+    assertEquals(RuleType.CONTINUE, trie.getRuleType(InetAddresses.forString("192.168.1.2")));
   }
 
   @Test
@@ -39,7 +39,7 @@ public class PrefixTrieTest {
     // test all cases
     assertEquals(RuleType.ALLOW, trie.getRuleType(InetAddresses.forString("192.168.1.1")));
     assertEquals(RuleType.BLOCK, trie.getRuleType(InetAddresses.forString("192.168.127.127")));
-    assertEquals(RuleType.DEFAULT, trie.getRuleType(InetAddresses.forString("1.1.1.1")));
+    assertEquals(RuleType.CONTINUE, trie.getRuleType(InetAddresses.forString("1.1.1.1")));
 
   }
 }

@@ -24,7 +24,7 @@ public final class PrefixTrie extends PrefixTrieNode{
     byte[] addressBytes = address.getAddress();
 
     PrefixTrieNode node = this;
-    RuleType ruleType = RuleType.DEFAULT;
+    RuleType ruleType = RuleType.CONTINUE;
 
     for (byte b : addressBytes) {
       for (int i = 7; i >= 0; --i) {
@@ -38,7 +38,7 @@ public final class PrefixTrie extends PrefixTrieNode{
         // check the rule type
         // if not default, update the latest found rule
         RuleType rule = node.getRuleType();
-        if (rule != RuleType.DEFAULT) {
+        if (rule != RuleType.CONTINUE) {
           ruleType = rule;
         }
       }

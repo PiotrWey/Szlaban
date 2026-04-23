@@ -30,6 +30,6 @@ public class FilterRuleEvaluator implements RuleEvaluator {
     } else if (address instanceof Inet6Address addr6) {
       return v6trie.getRuleType(addr6);
     }
-    return RuleType.DEFAULT;
+    return RuleType.CONTINUE;
   }
 }

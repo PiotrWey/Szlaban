@@ -7,11 +7,9 @@
 
 package dev.piotr_weychan.szlaban.firewall.filter;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -20,11 +18,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class LookupRuleEvaluator implements RuleEvaluator {
   private final Map<String, Set<String>> rules;
   private final String apiEndpoint;
@@ -106,6 +103,6 @@ public class LookupRuleEvaluator implements RuleEvaluator {
       throw new RuleEvaluationException("Error while reading URL", e);
     }
 
-    return RuleType.DEFAULT;
+    return RuleType.CONTINUE;
   }
 }
