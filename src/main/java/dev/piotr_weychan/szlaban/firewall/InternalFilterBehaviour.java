@@ -27,7 +27,7 @@ import java.net.InetSocketAddress;
  */
 
 class InternalFilterBehaviour extends AbstractBehaviour {
-  private RuleEvaluatorChain chain;
+  private final RuleEvaluatorChain chain;
 
   public InternalFilterBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) throws IllegalStateException {
     super(ctx);
@@ -58,7 +58,7 @@ class InternalFilterBehaviour extends AbstractBehaviour {
                 // The returned object *should* be of type InetSocketAddress, so the cast should just work
                 InetAddress address = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress();
 
-                RuleType result = null;
+                RuleType result;
 
                 try {
                   result = chain.evaluate(address);

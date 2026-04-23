@@ -170,7 +170,7 @@ public final class FirewallModule extends AbstractModule {
           break;
         } catch (IllegalStateException e) { // If creating this fails, we fall through (break is not called)
           plugin.getSLF4JLogger().error("Failed to register InternalFilterBehaviour: {}", e.getMessage());
-        };
+        }
       case "protocollib":
         // ProtocolLib does not allow blocking EVERY SINGLE in/outbound connection
         if (capabilities.contains(Capability.PROTOCOL_LIB)) {

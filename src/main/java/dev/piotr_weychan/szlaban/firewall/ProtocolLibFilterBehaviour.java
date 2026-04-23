@@ -48,9 +48,11 @@ public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
       packetAdapter = new PacketAdapter(ctx.plugin(), ListenerPriority.NORMAL, packetTypes) {
         private void handleEvent(PacketEvent event, String direction) {
           // get player's IP
-          InetAddress address = event.getPlayer().getAddress().getAddress();
+          InetAddress address = Objects.requireNonNull(
+              event.getPlayer().getAddress()
+          ).getAddress();
 
-          RuleType result = null;
+          RuleType result;
 
           try {
             result = chain.evaluate(address);

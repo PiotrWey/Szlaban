@@ -32,7 +32,7 @@ public class EventListenerFilterBehaviour extends ListenerBehaviour {
   public void onConnectionCreate(AsyncPlayerPreLoginEvent event) {
     InetAddress address = event.getAddress();
 
-    RuleType result = null;
+    RuleType result;
 
     try {
       result = chain.evaluate(address);
@@ -58,7 +58,7 @@ public class EventListenerFilterBehaviour extends ListenerBehaviour {
   public void onServerListPing(PaperServerListPingEvent event) {
     InetAddress address = event.getAddress();
 
-    RuleType result = null;
+    RuleType result;
 
     try {
       result = chain.evaluate(address);
