@@ -46,6 +46,11 @@ jobs:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           token: ${{ github.token }}
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Upload Build Artefacts
         uses: actions/upload-artifact@v7
         if: success()

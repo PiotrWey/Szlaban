@@ -2,6 +2,7 @@ import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
   java
+  jacoco
   id("xyz.jpenilla.run-paper") version "3.0.2"
   id("com.gradleup.shadow") version "9.4.1"
   id("io.papermc.paperweight.userdev") version "2.0.0-beta.21"
@@ -73,14 +74,20 @@ tasks {
   }
 
   test {
+    finalizedBy(named<JacocoReport>("jacocoTestReport"))
     useJUnitPlatform()
-    jvmArgs(
-      "-XX:+EnableDynamicAgentLoading"
-    )
+    jvmArgs("-XX:+EnableDynamicAgentLoading" )
+  }
+
+  named<JacocoReport>("jacocoTestReport") {
+    dependsOn(test)
+    reports {
+      xml.required = true
+      html.required = false
+    }
   }
 
 }
-
 
 val targetJavaVersion = 21
 
