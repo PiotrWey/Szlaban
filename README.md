@@ -1,10 +1,12 @@
 <img src="img/wordmark.png" alt="Szlaban Word mark logo" />
 
+<!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
   <h1>Szlaban</h1>
 </div>
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PiotrWey/Szlaban/tests.yml?style=plastic&logo=github)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PiotrWey/Szlaban/ci.yml?style=plastic&logo=github)
+![Codecov](https://img.shields.io/codecov/c/github/PiotrWey/Szlaban?style=plastic&logo=codecov)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/PiotrWey/Szlaban/total?style=plastic&logo=github)
 
 
@@ -110,7 +112,7 @@ may not apply to your server, so you can tell the plugin to ignore them. This fe
 owners, though some automated setup prompts may prove useful for experienced admins. Nevertheless, if you're an
 experienced owner, you may just want to disable this module from loading in the first place.
 
-Some of these changes may change other config files (e.g. `server.properties`)<!--, in testing this didn't seem to cause
+Some of these changes may change other config files (e.g. `server.properties`)< !--, in testing this didn't seem to cause
 any issues, but file IO can sometimes break-- >. This functionality can be disabled in the config.
 -->
 
