@@ -5,13 +5,13 @@ on:
     paths:
       - "src/**"
       - "*.gradle.kts"
-      - ".github/workflows/tests.yml"
+      - ".github/workflows/ci.yml"
 
   pull_request:
     paths:
       - "src/**"
       - "*.gradle.kts"
-      - ".github/workflows/tests.yml"
+      - ".github/workflows/ci.yml"
 
 permissions:
   contents: read
