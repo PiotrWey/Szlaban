@@ -13,10 +13,8 @@ import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluationException;
 import dev.piotr_weychan.szlaban.firewall.filter.RuleEvaluatorChain;
 import dev.piotr_weychan.szlaban.firewall.filter.RuleType;
 import io.netty.channel.*;
-import io.papermc.paper.network.ChannelInitializeListener;
 import io.papermc.paper.network.ChannelInitializeListenerHolder;
 import net.kyori.adventure.key.Key;
-import org.jetbrains.annotations.NotNull;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -70,10 +68,13 @@ class InternalFilterBehaviour extends AbstractBehaviour {
                 }
 
                 if (result == RuleType.BLOCK) {
-                  ctx.disconnect();
+                  ctx.close();
                   behaviourContext.plugin().getSLF4JLogger().info("Blocked packet from {}", address.getHostAddress());
+                  return;
                 }
+
                 // Let the connection continue, since it's not blocked
+                super.channelActive(ctx);
               }
             }
           )
