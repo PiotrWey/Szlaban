@@ -26,7 +26,7 @@ import java.net.InetSocketAddress;
  * This MAY CAUSE INSTABILITY and uses pretty hacky workarounds for accessing NMS (reflection!).
  */
 
-class InternalFilterBehaviour extends AbstractBehaviour {
+final class InternalFilterBehaviour extends AbstractBehaviour {
   private final RuleEvaluatorChain chain;
 
   public InternalFilterBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) throws IllegalStateException {
@@ -43,7 +43,7 @@ class InternalFilterBehaviour extends AbstractBehaviour {
   }
 
   @Override
-  public void start() {
+  public void enable() {
     // ctx gets overridden in the listener adding context
     BehaviourContext behaviourContext = ctx;
 
@@ -69,7 +69,7 @@ class InternalFilterBehaviour extends AbstractBehaviour {
 
                 if (result == RuleType.BLOCK) {
                   ctx.close();
-                  behaviourContext.plugin().getSLF4JLogger().info("Blocked packet from {}", address.getHostAddress());
+                  behaviourContext.plugin().getSLF4JLogger().info("Blocked incoming connection from {}", address.getHostAddress());
                   return;
                 }
 
@@ -82,7 +82,7 @@ class InternalFilterBehaviour extends AbstractBehaviour {
   }
 
   @Override
-  public void stop() {
+  public void disable() {
     ChannelInitializeListenerHolder.removeListener(Key.key("szlaban", "firewall")); // szlaban:firewall
   }
 }

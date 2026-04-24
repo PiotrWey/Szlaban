@@ -30,12 +30,12 @@ class AbstractModuleTest {
     }
 
     @Override
-    public void start() {
+    public void enable() {
       started++;
     }
 
     @Override
-    public void stop() {
+    public void disable() {
       stopped++;
     }
   }

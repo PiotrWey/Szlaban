@@ -78,7 +78,7 @@ public abstract class AbstractModule implements Module {
   protected final void registerBehaviour(Behaviour behaviour) {
     behaviours.add(behaviour);
     if (enabled) {
-      behaviour.start();
+      behaviour.enable();
     }
   }
 
@@ -93,7 +93,7 @@ public abstract class AbstractModule implements Module {
     enabled = true;
     for (Behaviour behaviour : behaviours) {
       try {
-        behaviour.start();
+        behaviour.enable();
       } catch (Exception e) {
         plugin.getSLF4JLogger().error("Failed to start behaviour {}: {}", behaviour.getClass().getSimpleName(), e.getMessage());
       }
@@ -112,7 +112,7 @@ public abstract class AbstractModule implements Module {
     enabled = false;
     for (Behaviour behaviour : behaviours) {
       try {
-        behaviour.stop();
+        behaviour.disable();
       } catch (Exception e) {
         plugin.getSLF4JLogger().error("Failed to stop behaviour {}: {}", behaviour.getClass().getSimpleName(), e.getMessage());
       }

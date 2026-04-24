@@ -17,7 +17,7 @@ public abstract class ListenerBehaviour extends AbstractBehaviour implements Lis
     super(ctx);
   }
 
-  public void start() {
+  public void enable() {
     // prevent multi-run
     if (enabled) return;
     enabled = true;
@@ -25,7 +25,7 @@ public abstract class ListenerBehaviour extends AbstractBehaviour implements Lis
     ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
   }
 
-  public void stop() {
+  public void disable() {
     // prevent multi-run
     if (!enabled) return;
     enabled = false;

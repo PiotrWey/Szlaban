@@ -8,6 +8,6 @@
 package dev.piotr_weychan.szlaban.behaviour;
 
 public interface Behaviour {
-  void start();
-  void stop();
+  void enable();
+  void disable();
 }

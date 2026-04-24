@@ -22,7 +22,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
+final class ProtocolLibFilterBehaviour extends AbstractBehaviour {
 
   private PacketAdapter packetAdapter;
   private final List<PacketType> packetTypes;
@@ -43,7 +43,7 @@ public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
   }
 
   @Override
-  public void start() {
+  public void enable() {
       packetAdapter = new PacketAdapter(ctx.plugin(), ListenerPriority.HIGH, packetTypes) {
         private void handleEvent(PacketEvent event, String direction) {
           // get player's IP (null-safe)
@@ -83,7 +83,7 @@ public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
   }
 
   @Override
-  public void stop() {
+  public void disable() {
     ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
   }
 }

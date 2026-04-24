@@ -18,10 +18,10 @@ public abstract class AbstractBehaviour implements Behaviour {
   /**
    * Enable the behaviour
    */
-  public abstract void start();
+  public abstract void enable();
 
   /**
    * Disable the behaviour
    */
-  public abstract void stop();
+  public abstract void disable();
 }

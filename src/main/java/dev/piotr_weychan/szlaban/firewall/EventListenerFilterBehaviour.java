@@ -20,7 +20,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 import java.net.InetAddress;
 
-public class EventListenerFilterBehaviour extends ListenerBehaviour {
+final class EventListenerFilterBehaviour extends ListenerBehaviour {
   private final RuleEvaluatorChain chain;
 
   public EventListenerFilterBehaviour(BehaviourContext ctx, RuleEvaluatorChain chain) {
@@ -44,7 +44,7 @@ public class EventListenerFilterBehaviour extends ListenerBehaviour {
     // Check address and fail
     if (result == RuleType.BLOCK) {
       event.disallow(
-          AsyncPlayerPreLoginEvent.Result.KICK_BANNED,
+          AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
           Component
               .text("You have been blocked from connecting to this server. Please contact an administrator.\n")
               .color(NamedTextColor.RED)
