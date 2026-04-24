@@ -12,9 +12,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 
@@ -96,8 +94,25 @@ public final class ModuleManager {
   }
 
   /**
+   * Gets a random module with the specified class, or {@code null} otherwise.
+   * @param moduleClass the class to search for
+   * @return a module with the given class, or {@code null} if not present
+   */
+  @Contract(pure = true)
+  @Nullable
+  public <T extends Module> T getModule(Class<T> moduleClass) {
+    return modules.values().stream()
+        .filter(moduleClass::isInstance)
+        .map(moduleClass::cast)
+        .findFirst()
+        .orElse(null);
+  }
+
+  /**
    * Gets a list of registered module identifiers.
    * @return a list of module identifiers
+   * @apiNote The recommended way for accessing a set of identifiers and {@link Module}s is
+   * {@link ModuleManager#getModuleEntries()}
    */
   @Unmodifiable
   @Contract(pure = true)
@@ -107,15 +122,26 @@ public final class ModuleManager {
 
   /**
    * Gets a list of all registered {@link Module} objects without associated identifiers.
-   * <br />
-   * There is no way to reverse lookup identifier from an instance of {@link Module}, so this
-   * should only be used for bulk operations involving all modules.
    * @return a list of all the registered {@link Module} objects
+   * @apiNote The recommended way for accessing a set of identifiers and {@link Module}s is
+   * {@link ModuleManager#getModuleEntries()}
    */
   @Unmodifiable
   @Contract(pure = true)
   public List<Module> getModules() {
     return List.copyOf(modules.values());
+  }
+
+  /**
+   * Gets a set of {@code String} -> {@link Module} entries
+   * @return an unmodifiable set of map entries of {@code String} -> {@link Module}
+   * @apiNote If you only need to iterate through identifiers OR module objects without the other
+   * field, see {@link ModuleManager#getModules()} or {@link ModuleManager#getModuleIds()}
+   */
+  @Unmodifiable
+  @Contract(pure = true)
+  public Set<Map.Entry<String, Module>> getModuleEntries() {
+    return Collections.unmodifiableSet(modules.entrySet());
   }
 
 

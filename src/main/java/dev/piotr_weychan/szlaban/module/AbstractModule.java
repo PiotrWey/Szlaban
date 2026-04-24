@@ -7,21 +7,27 @@
 
 package dev.piotr_weychan.szlaban.module;
 
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.piotr_weychan.szlaban.behaviour.Behaviour;
-
 import dev.piotr_weychan.szlaban.behaviour.BehaviourContext;
 import dev.piotr_weychan.szlaban.behaviour.Capability;
-import org.bukkit.plugin.Plugin;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * Base class for a Module, provides fundamental implementation details
+ * @implSpec All setup and registration should be implemented/called in {@link AbstractModule#onRegister()}, <b>not the
+ * constructor!</b> The constructor should only be used to initialise class fields.
+ */
 public abstract class AbstractModule implements Module {
-  protected final Plugin plugin;
+  protected final JavaPlugin plugin;
   protected boolean enabled = false;
   protected final EnumSet<Capability> capabilities;
   protected final BehaviourContext behaviourContext;
@@ -54,7 +60,8 @@ public abstract class AbstractModule implements Module {
   }
 
   /**
-   * Called when the module is registered, may be used as an alternative to the constructor.
+   * Called when the module is registered.
+   * @implSpec All configuration and registration should be run in here, <b>not in the constructor!</b>
    */
   @Override
   public void onRegister() {}
@@ -91,7 +98,7 @@ public abstract class AbstractModule implements Module {
         plugin.getSLF4JLogger().error("Failed to start behaviour {}: {}", behaviour.getClass().getSimpleName(), e.getMessage());
       }
     }
-    plugin.getSLF4JLogger().info("Module {} enabled", this.getClass().getSimpleName());
+    plugin.getSLF4JLogger().info("Module {} enabled", this.getName());
   }
 
   /**
@@ -111,7 +118,7 @@ public abstract class AbstractModule implements Module {
       }
     }
 
-    plugin.getSLF4JLogger().info("Module {} disabled", this.getClass().getSimpleName());
+    plugin.getSLF4JLogger().info("Module {} disabled", this.getName());
   }
 
   /**
@@ -122,5 +129,13 @@ public abstract class AbstractModule implements Module {
   @Contract(pure = true)
   public boolean isEnabled() {
     return enabled;
+  }
+
+  @Override
+  @Nullable
+  @Contract(pure = true)
+  @SuppressWarnings("UnstableApiUsage")
+  public LiteralCommandNode<CommandSourceStack> getCommandNode(String name) {
+    return null;
   }
 }

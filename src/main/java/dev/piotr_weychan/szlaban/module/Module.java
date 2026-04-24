@@ -7,6 +7,11 @@
 
 package dev.piotr_weychan.szlaban.module;
 
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+
+import javax.annotation.Nullable;
+
 public interface Module {
   String getName();
   String getDescription();
@@ -15,4 +20,7 @@ public interface Module {
   boolean isEnabled();
   void onRegister();
   void onUnregister();
+
+  @SuppressWarnings("UnstableApiUsage")
+  @Nullable LiteralCommandNode<CommandSourceStack> getCommandNode(String name);
 }

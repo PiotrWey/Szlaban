@@ -8,18 +8,15 @@
 package dev.piotr_weychan.szlaban;
 
 import dev.piotr_weychan.szlaban.behaviour.Capability;
-import dev.piotr_weychan.szlaban.command.ConfigurationCommand;
+import dev.piotr_weychan.szlaban.command.CommandManager;
 import dev.piotr_weychan.szlaban.firewall.FirewallModule;
 import dev.piotr_weychan.szlaban.module.Module;
 import dev.piotr_weychan.szlaban.module.ModuleManager;
-
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedBarChart;
-import org.bstats.charts.SimpleBarChart;
-import org.bstats.charts.SimplePie;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bstats.bukkit.Metrics;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -54,11 +51,11 @@ public final class Szlaban extends JavaPlugin {
   @SuppressWarnings("UnstableApiUsage")
   private void registerCommands() {
     // register all commands here
-    ConfigurationCommand cfgCommand = new ConfigurationCommand(this, moduleManager);
+    CommandManager manager = new CommandManager(this, moduleManager);
 
     this.getLifecycleManager().registerEventHandler(
         LifecycleEvents.COMMANDS,
-        commands -> commands.registrar().register(cfgCommand.szlabanConfig("szlaban"))
+        commands -> commands.registrar().register(manager.createConfigCommand("szlaban"))
     );
   }
 
