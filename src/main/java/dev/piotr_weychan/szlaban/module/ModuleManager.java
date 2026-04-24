@@ -74,9 +74,14 @@ public final class ModuleManager {
   public void reloadModule(String id) {
     Supplier<Module> supplier = moduleSuppliers.get(id);
     if (supplier == null) return;
+    // check whether the module was enabled prior to reload
+    boolean enabled = modules.get(id).isEnabled();
 
     unregisterModule(id);
     createAndRegister(id);
+
+    // enable it if it was
+    if (enabled) modules.get(id).enable();
   }
 
   /**

@@ -89,8 +89,7 @@ firewall:
   # This will run after basic IP filtering to avoid unnecessary requests for IPs
   # that are blocked anyway.
   # This may incur performance penalties if your server is getting too many connections
-  # at once, but that's what caching is for! Also this feature will attempt to rate-limit
-  # itself so we don't get blocked from the API...
+  # at once, but that's what caching is for!
   enable-ip-lookup: false
 
   # Advanced filtering rules
@@ -99,9 +98,14 @@ firewall:
   # be checked against the key, which is a representation of the path in the JSON output
   # demonstrated below.
   advanced-block-filters:
-    asn: &asn [ ]
-    connection.asn: *asn
-    country_code: [ ]
+    - key: asn
+      values: &asn
+        - 1136
+    - key: "connection.asn"
+      values: *asn
+    - key: country_code
+      values:
+        - NL
 
   # The API backend to use for IP info.
   # You may want to change this if you are hitting rate limits (429)

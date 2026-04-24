@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class FirewallModule extends AbstractModule {
 
@@ -107,8 +108,8 @@ public final class FirewallModule extends AbstractModule {
   }
 
   private LookupRuleEvaluator buildLookupRule(@NotNull ConfigurationSection firewallConfig) {
-    ConfigurationSection filterConfig = Objects.requireNonNull(
-        firewallConfig.getConfigurationSection("advanced-block-filters")
+    List<Map<?, ?>> filterConfig = Objects.requireNonNull(
+        firewallConfig.getMapList("advanced-block-filters")
     );
 
     String backend = Objects.requireNonNull(
@@ -118,8 +119,17 @@ public final class FirewallModule extends AbstractModule {
     Map<String, Set<String>> rules = new HashMap<>();
 
     // Populate filters
-    for (String key : filterConfig.getKeys(false)) {
-      rules.putIfAbsent(key, new HashSet<>(filterConfig.getStringList(key)));
+    for (Map<?, ?> entry : filterConfig) {
+      // unpack config
+      String key = (String) entry.get("key");
+      //noinspection unchecked
+      List<?> rawValues = (List<?>) entry.get("values");
+
+      Set<String> values = rawValues.stream()
+          .map(Object::toString)
+              .collect(Collectors.toSet());
+      // place
+      rules.putIfAbsent(key, values);
     }
 
     return new LookupRuleEvaluator(rules, backend);
@@ -140,10 +150,10 @@ public final class FirewallModule extends AbstractModule {
     );
 
     // read settings, setting defaults if not present
-    String engine = Objects.requireNonNullElse(firewallConfig.getString("engine"), "protocollib");
+    String engine = Objects.requireNonNullElse(firewallConfig.getString("engine"), "internal");
     // advanced settings concerning IP lookup
     // rest are loaded in FirewallModule#buildLookupRule
-    boolean enableIpLookup = firewallConfig.getBoolean("enableIpLookup");
+    boolean enableIpLookup = firewallConfig.getBoolean("enable-ip-lookup");
 
     // convert config into a nice set of filters
     RuleEvaluatorChain chain = new RuleEvaluatorChain();

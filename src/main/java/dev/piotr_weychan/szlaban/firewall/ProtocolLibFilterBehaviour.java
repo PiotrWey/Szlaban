@@ -44,8 +44,6 @@ public class ProtocolLibFilterBehaviour extends AbstractBehaviour {
 
   @Override
   public void start() {
-    ctx.plugin().getSLF4JLogger().info("Starting PacketInterceptorBehaviour");
-
       packetAdapter = new PacketAdapter(ctx.plugin(), ListenerPriority.HIGH, packetTypes) {
         private void handleEvent(PacketEvent event, String direction) {
           // get player's IP (null-safe)

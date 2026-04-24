@@ -91,8 +91,6 @@ public class LookupRuleEvaluator implements RuleEvaluator {
         // Find the element at path
         JsonElement jsonElement = getJsonElement(json, path);
 
-        System.out.println(path + " " + values.toString() + " " + jsonElement);
-
         // Skip if key not found
         if (jsonElement == null || !jsonElement.isJsonPrimitive()) continue;
 

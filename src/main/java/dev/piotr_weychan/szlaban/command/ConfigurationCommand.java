@@ -114,6 +114,7 @@ public class ConfigurationCommand {
 
                       CommandSender sender = ctx.getSource().getSender();
 
+                      plugin.reloadConfig();
                       moduleManager.reloadModule(moduleName);
 
                       sender.sendRichMessage("<gold>Module <yellow>" + moduleName + "</yellow> has been reloaded!");
