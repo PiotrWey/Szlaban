@@ -55,16 +55,16 @@ public final class Advisories {
               serverProps.setValue("online-mode", true);
               serverProps.save();
             },
-            "Disable Chat Signing Enforcement",
-            text("Enforces chat signing, preventing players without signing support from joining the server."),
+            "Enable Online Mode",
+            text("Requires players to authenticate with Mojang before joining."),
             Component.empty()
-                .append(text("The chat signing system introduced in 1.19 allows players to be reported to Mojang"))
-                .append(text(" for their chat messages. Such reports can lead to "))
-                .append(text("account-level").decorate(TextDecoration.BOLD))
-                .append(text(" bans. The system has also been subject to security vulnerabilities in the past. "))
-                .append(text("Disabling this enforcement is recommended to protect your players from potentially"))
-                .append(text(" having their accounts banned as a result of reports on your server. "))
-                .append(text("Disabling chat signing requires an additional plugin."))
+                .append(text("Online mode requires players to authenticate with Mojang's session servers before"))
+                .append(text(" joining, ensuring they own a legitimate copy of the game. Without it, anyone can"))
+                .append(text(" join using any username - including those of existing players - allowing them to"))
+                .append(text(" impersonate others and bypass UUID-based permissions and bans. "))
+                .append(text("Online mode should only be disabled on proxy networks (e.g. BungeeCord or Velocity)"))
+                .append(text(" where authentication is handled upstream; in that case, ensure your proxy is"))
+                .append(text(" configured to use online mode UUIDs."))
         )
     );
 
@@ -72,7 +72,7 @@ public final class Advisories {
         new ConfigAdvisory<>(serverProps,
             "enforce-secure-profile", "false",
             "Disable Chat Signing Enforcement",
-            text("Allows players without signing support to join the server."),
+            text("Allows players without chat signing support to join the server."),
             Component.empty()
                 .append(text("The chat signing system introduced in 1.19 allows players to be reported to Mojang"))
                 .append(text(" for their chat messages. Such reports can lead to "))
