@@ -5,13 +5,12 @@
 package dev.piotr_weychan.szlaban.module;
 
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import dev.piotr_weychan.szlaban.behaviour.Capability;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,10 +18,10 @@ import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("WriteOnlyObject")
 class ModuleManagerTest {
-  static final JavaPlugin mockPlugin = mock(JavaPlugin.class);
+  JavaPlugin mockPlugin;
 
   // test module for testing
-  private static class TestModule extends AbstractModule {
+  private class TestModule extends AbstractModule {
     public final List<String> functionCalls = new ArrayList<>();
 
     /**
@@ -71,6 +70,11 @@ class ModuleManagerTest {
 
   }
 
+  @BeforeEach
+  void setUp() {
+     mockPlugin = mock(JavaPlugin.class);
+  }
+
   // test if unregistration lifecycle methods are called
   @Test
   void unregistrationLifecycleMethods() {
@@ -92,7 +96,7 @@ class ModuleManagerTest {
 
   // test if we can access modules after registration
   @Test
-  void moduleAccess() {
+  void moduleAccessById() {
     ModuleManager mm = new ModuleManager(mockPlugin);
 
     AtomicReference<TestModule> ref = new AtomicReference<>();
@@ -104,6 +108,92 @@ class ModuleManagerTest {
       return m;
     });
     assertEquals(ref.get(), mm.getModule("mod1"));
+  }
+
+  // test if modules can be accessed by class
+  @Test
+  void moduleAccessByClass() {
+    ModuleManager mm = new ModuleManager(mockPlugin);
+
+    AtomicReference<TestModule> ref = new AtomicReference<>();
+
+    // register the supplier, tracing the reference
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref.set(m);
+      return m;
+    });
+
+    assertEquals(ref.get(), mm.getModule(TestModule.class));
+  }
+
+  // gets all module ids
+  @Test
+  void getsModuleIds() {
+    ModuleManager mm = new ModuleManager(mockPlugin);
+
+    // register multiple modules
+    mm.registerModule("mod1", TestModule::new);
+    mm.registerModule("mod2", TestModule::new);
+    mm.registerModule("mod3", TestModule::new);
+
+    // ignore order
+    assertTrue(mm.getModuleIds().containsAll(List.of("mod1", "mod2", "mod3")));
+  }
+
+  @Test
+  void getsModuleObjects() {
+    ModuleManager mm = new ModuleManager(mockPlugin);
+
+    AtomicReference<TestModule> ref1 = new AtomicReference<>();
+    AtomicReference<TestModule> ref2 = new AtomicReference<>();
+
+    // register the supplier, tracing the reference
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref1.set(m);
+      return m;
+    });
+    // register the supplier, tracing the reference
+    mm.registerModule("mod2", () -> {
+      TestModule m = new TestModule();
+      ref2.set(m);
+      return m;
+    });
+
+    // ignore order
+    assertTrue(mm.getModules().containsAll(List.of(ref1.get(), ref2.get())));
+
+  }
+
+  @Test
+  void getsModuleEntries() {
+    ModuleManager mm = new ModuleManager(mockPlugin);
+
+    AtomicReference<Module> ref1 = new AtomicReference<>();
+    AtomicReference<Module> ref2 = new AtomicReference<>();
+
+    // register the supplier, tracing the reference
+    mm.registerModule("mod1", () -> {
+      TestModule m = new TestModule();
+      ref1.set(m);
+      return m;
+    });
+    // register the supplier, tracing the reference
+    mm.registerModule("mod2", () -> {
+      TestModule m = new TestModule();
+      ref2.set(m);
+      return m;
+    });
+
+    Collection<Map.Entry<String, Module>> expectedEntries = Map.of(
+        "mod1", ref1.get(),
+        "mod2", ref2.get()
+    ).entrySet();
+
+    // has all entries
+    assertTrue(mm.getModuleEntries().containsAll(expectedEntries));
+
   }
 
   // test that duplicate calls to module registration are ignored and do not overwrite
@@ -176,6 +266,24 @@ class ModuleManagerTest {
     });
 
     assertEquals(List.of("onRegister"), ref.get().functionCalls);
+  }
+
+  // test that reloading modules works properly
+  @Test
+  void reloadModuleCreatesNewInstance() {
+    ModuleManager mm = new ModuleManager(mockPlugin);
+
+    // register the supplier
+    mm.registerModule("mod1", TestModule::new);
+
+    // get module, then reload
+    Module mod1 = mm.getModule("mod1");
+    mm.reloadModule("mod1");
+    Module mod2 = mm.getModule("mod1");
+
+    // should be different
+    assertNotEquals(mod1, mod2);
+
   }
 
 }
