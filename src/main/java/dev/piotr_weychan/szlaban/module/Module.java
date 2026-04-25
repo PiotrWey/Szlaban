@@ -12,7 +12,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 import javax.annotation.Nullable;
 
-public interface Module {
+public sealed interface Module
+  permits AbstractModule {
   String getName();
   String getDescription();
   void enable();

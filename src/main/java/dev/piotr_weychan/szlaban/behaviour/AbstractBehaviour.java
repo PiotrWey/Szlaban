@@ -7,7 +7,7 @@
 
 package dev.piotr_weychan.szlaban.behaviour;
 
-public abstract class AbstractBehaviour implements Behaviour {
+public abstract non-sealed class AbstractBehaviour implements Behaviour {
   protected final BehaviourContext ctx;
   protected boolean enabled;
 

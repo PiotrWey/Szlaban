@@ -7,7 +7,8 @@
 
 package dev.piotr_weychan.szlaban.behaviour;
 
-public interface Behaviour {
+public sealed interface Behaviour
+ permits AbstractBehaviour {
   void enable();
   void disable();
 }

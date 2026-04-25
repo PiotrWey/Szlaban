@@ -26,7 +26,7 @@ import java.util.List;
  * @implSpec All setup and registration should be implemented/called in {@link AbstractModule#onRegister()}, <b>not the
  * constructor!</b> The constructor should only be used to initialise class fields.
  */
-public abstract class AbstractModule implements Module {
+public abstract non-sealed class AbstractModule implements Module {
   protected final JavaPlugin plugin;
   protected boolean enabled = false;
   protected final EnumSet<Capability> capabilities;
