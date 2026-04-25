@@ -1,3 +1,4 @@
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
   id("xyz.jpenilla.run-paper") version "3.0.2"
   id("com.gradleup.shadow") version "9.4.1"
   id("io.papermc.paperweight.userdev") version "2.0.0-beta.21"
+  id("de.eldoria.plugin-yml.bukkit") version "0.9.0"
 }
 
 group = project.property("group") as String
@@ -39,8 +41,9 @@ dependencies {
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   // mocking framework
   testImplementation("org.mockito:mockito-core:5.+")
-  // libraries for tests
-  // testImplementation("io.papermc.paper:paper-api:${targetMcVersion}-R0.1-SNAPSHOT")
+
+  // bukkit
+  bukkitLibrary("com.google.code.gson", "gson", "2.10.1")
 }
 
 tasks {
@@ -108,23 +111,34 @@ tasks.withType<JavaCompile>().configureEach {
   }
 }
 
-tasks.processResources {
-// dynamic for the plugin.json
-  val props = mapOf(
-    "version" to version,
-    "name" to project.property("name") as String,
-    "description" to project.property("description") as String,
-    "website" to project.property("website") as String,
-    "authors" to (project.property("authors") as String).trim('[', ']').split(","),
-    "contributors" to (project.property("contributors") as String).trim('[', ']').split(","),
-    "main" to project.property("main") as String,
-    "prefix" to project.property("prefix") as String,
-    "api_version" to targetMcVersion,
-  )
-  inputs.properties(props)
-  filteringCharset = "UTF-8"
+bukkit {
+  main = project.property("main") as String
+  load = BukkitPluginDescription.PluginLoadOrder.STARTUP;
+  apiVersion = project.property("target") as String
+  prefix = project.property("prefix") as String
+  foliaSupported = false
 
-  filesMatching("plugin.yml") {
-    expand(props)
+  description = project.property("description") as String
+  website = project.property("website") as String
+  authors = (project.property("authors") as String).trim('[', ']').split(",").map { it.trim() }
+  contributors = (project.property("contributors") as String).trim('[', ']').split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+  depend = (project.property("depend") as String).trim('[', ']').split(",").map { it.trim() }.filter { it.isNotEmpty() }
+  softDepend = (project.property("softDepend") as String).trim('[', ']').split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+  permissions {
+    register("szlaban.*") {
+      description = "Grants all Szlaban permissions"
+      default = BukkitPluginDescription.Permission.Default.OP
+      children = listOf("szlaban.admin", "szlaban.use")
+    }
+    register("szlaban.admin") {
+      description = "Grants admin permissions"
+      default = BukkitPluginDescription.Permission.Default.OP
+    }
+    register("szlaban.advisor") {
+      description = "Allows full use of the Advisor module"
+      default = BukkitPluginDescription.Permission.Default.OP
+    }
   }
 }

@@ -77,7 +77,7 @@ public class CommandManager {
 
   private LiteralCommandNode<CommandSourceStack> module() {
     return Commands.literal("module")
-        .requires(ctx -> ctx.getSender().hasPermission("szlaban.config"))
+        .requires(ctx -> ctx.getSender().hasPermission("szlaban.admin"))
         .then(Commands.argument("module", StringArgumentType.string())
             .suggests((ctx, builder) -> {
               for (String module : moduleManager.getModuleIds()) {
@@ -146,7 +146,7 @@ public class CommandManager {
 
   private LiteralCommandNode<CommandSourceStack> modules() {
     return Commands.literal("modules")
-        .requires(ctx -> ctx.getSender().hasPermission("szlaban.config"))
+        .requires(ctx -> ctx.getSender().hasPermission("szlaban.admin"))
         .executes(ctx -> {
           List<Component> modules = moduleManager.getModuleIds().stream().map(id -> {
             Module module = moduleManager.getModule(id);
@@ -181,7 +181,7 @@ public class CommandManager {
 
   private LiteralCommandNode<CommandSourceStack> reloadConfig() {
     return Commands.literal("reload")
-        .requires(ctx -> ctx.getSender().hasPermission("szlaban.config"))
+        .requires(ctx -> ctx.getSender().hasPermission("szlaban.admin"))
         .executes(ctx -> {
           plugin.reloadConfig();
           moduleManager.getModuleIds().forEach(moduleManager::reloadModule);
