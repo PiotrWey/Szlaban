@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("WriteOnlyObject")
 class ModuleManagerTest {
-  protected static final JavaPlugin mockPlugin = mock(JavaPlugin.class);
+  static final JavaPlugin mockPlugin = mock(JavaPlugin.class);
 
   // test module for testing
   private static class TestModule extends AbstractModule {
