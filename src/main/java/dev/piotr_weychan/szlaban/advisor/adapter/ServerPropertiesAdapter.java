@@ -24,8 +24,8 @@ public class ServerPropertiesAdapter implements ConfigAdapter {
 
     this.properties = new Properties();
 
-    try {
-      this.properties.load(new FileInputStream(file));
+    try (InputStream input = new FileInputStream(file)) {
+      this.properties.load(input);
     } catch (FileNotFoundException e) {
       plugin.getSLF4JLogger().error("Unable to locate server.properties at {}", file.getAbsolutePath());
     } catch (IOException e) {
@@ -46,8 +46,8 @@ public class ServerPropertiesAdapter implements ConfigAdapter {
 
   @Override
   public void save() {
-    try {
-      properties.store(new FileOutputStream(file), "Minecraft Server Properties");
+    try (FileOutputStream stream = new FileOutputStream(file)) {
+      properties.store(stream, "Minecraft Server Properties");
     } catch (FileNotFoundException e) {
       plugin.getSLF4JLogger().error("Unable to locate server.properties at {}", file.getAbsolutePath());
     }  catch (IOException e) {
