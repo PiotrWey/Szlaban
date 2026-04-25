@@ -7,6 +7,7 @@
 
 package dev.piotr_weychan.szlaban;
 
+import dev.piotr_weychan.szlaban.advisor.AdvisorModule;
 import dev.piotr_weychan.szlaban.behaviour.Capability;
 import dev.piotr_weychan.szlaban.command.CommandManager;
 import dev.piotr_weychan.szlaban.firewall.FirewallModule;
@@ -45,6 +46,9 @@ public final class Szlaban extends JavaPlugin {
     // register all modules here
     moduleManager.registerModule(
         "firewall", () -> new FirewallModule(this, capabilities)
+    );
+    moduleManager.registerModule(
+        "advisor", () -> new AdvisorModule(this, capabilities)
     );
   }
 
