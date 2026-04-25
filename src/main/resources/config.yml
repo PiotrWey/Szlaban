@@ -3,13 +3,6 @@ config-version: 1
 
 # Core plugin settings
 core:
-  # Should the startup banner be shown?
-  show_banner: true
-  # Which players should count as owners
-  # The recommended way for adding owners is by setting the 'szlaban.owner' permission node
-  # WARNING: All listed players will have ownership permissions on the plugin!
-  owners: []
-
 
 # Map of modules to enable and booleans for whether they should be enabled
 modules:
