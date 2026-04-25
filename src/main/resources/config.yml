@@ -13,12 +13,11 @@ core:
 
 # Map of modules to enable and booleans for whether they should be enabled
 modules:
-  advisories: true
+  advisor: true
   firewall: true
-  fail2ban: false
 
 # Settings for the advisory module
-advisories:
+advisor:
   # Whether to show owners the first-time login message
   show-first-login-message: true
 
@@ -29,12 +28,6 @@ advisories:
   # - rcon
   # - chat_signing
 
-  # Whether to allow writing directly to other configuration files (i.e.
-  # those not managed by this plugin).
-  # Useful if you want to toggle settings not normally editable in-game
-  # (like `enforce-secure-profile`), but there's a small chance it'll
-  # cause instabilities.
-  allow-other-config-changes: true
 
 # Settings for the firewall module
 firewall:
@@ -45,12 +38,6 @@ firewall:
   #   protocollib:  Use ProtocolLib for filtering connections - good fallback, will block MOST connections
   #   event:        Use Bukkit's Event API for filtering connections - rejects certain classes of login/status ping events
   engine: internal
-
-  # How to deal with blocked traffic
-  # Allowed values: drop, log
-  #   drop:  Terminates blocked connections (also logs them)
-  #   log:   Logs blocked connections (not very useful)
-  response: drop
 
   # A list of files containing IPs/CIDR ranges that should be blocked
   # - These should be text files with one IP/CIDR entry per line
@@ -72,16 +59,6 @@ firewall:
   allowlists:
     - allowlist.cfg
 
-  # How often (in seconds) the plugin should automatically re-read the contents of
-  # each kind of blocklist file.
-  # This does not affect the config reload command.
-  # Special values:
-  #    0:  Update only when file contents are changed (only works with local)
-  #   -1:  Never update after initial load
-  blocklist-update-rate:
-    local: 0
-    remote: 7200
-
   # ==== ADVANCED FIREWALL SETTINGS ====
   # If you want more from your firewall, you can play around with these settings.
 
@@ -99,13 +76,11 @@ firewall:
   # demonstrated below.
   advanced-block-filters:
     - key: asn
-      values: &asn
-        - 1136
+      values: &asn [ ]
     - key: "connection.asn"
       values: *asn
     - key: country_code
-      values:
-        - NL
+      values: [ ]
 
   # The API backend to use for IP info.
   # You may want to change this if you are hitting rate limits (429)
@@ -116,13 +91,6 @@ firewall:
   # Limited data, no specified rate-limit. Docs: https://seeip.org/
   # _api-backend: 'https://api.seeip.org/geoip/%s'
 
-
-
-
-# Settings for the fail2ban module
-fail2ban:
-
-  # TODO: add config options
 
 # The following are internal settings not intended for use by normal users of the plugin.
 # You will NOT RECEIVE SUPPORT if you enable these without knowing what they do. Don't ask

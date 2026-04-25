@@ -5,9 +5,11 @@
   <h1>Szlaban</h1>
 </div>
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PiotrWey/Szlaban/ci.yml?style=plastic&logo=github)
-![Codecov](https://img.shields.io/codecov/c/github/PiotrWey/Szlaban?style=plastic&logo=codecov)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/PiotrWey/Szlaban/total?style=plastic&logo=github)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PiotrWey/Szlaban/ci.yml?style=plastic&logo=github)](https://github.com/PiotrWey/Szlaban/actions/workflows/ci.yml)
+[![Codecov](https://img.shields.io/codecov/c/github/PiotrWey/Szlaban?style=plastic&logo=codecov)](https://app.codecov.io/github/PiotrWey/Szlaban)
+[![bStats Servers](https://img.shields.io/bstats/servers/30910?style=plastic)](https://bstats.org/plugin/bukkit/Szlaban/30910)
+
+[//]: # (![GitHub Downloads &#40;all assets, all releases&#41;]&#40;https://img.shields.io/github/downloads/PiotrWey/Szlaban/total?style=plastic&logo=github&#41;)
 
 
 **Szlaban** is a multi-functional Minecraft server security plugin. It consists of multiple modules designed to help you

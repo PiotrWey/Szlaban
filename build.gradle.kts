@@ -48,7 +48,6 @@ tasks {
   named<RunServer>("runServer") {
     minecraftVersion(targetMcVersion)
     // disable bstats to avoid counting development instances
-    jvmArgs("-Dbstats.enabled=false")
     downloadPlugins {
       github("dmulloy2", "ProtocolLib", "5.4.0", "ProtocolLib.jar")
     }
