@@ -30,7 +30,7 @@ public class ConfigAdvisory<T> extends AbstractAdvisory {
   }
 
   @Override
-  public boolean isApplied() {
+  public boolean isResolved() {
     return Objects.equals(config.getValue(path), recommendedValue);
   }
 

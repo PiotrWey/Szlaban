@@ -25,5 +25,5 @@ public interface Advisory {
    * Check if the advisory applies
    * @return whether the advisory is not implemented
    */
-  boolean isApplied();
+  boolean isResolved();
 }

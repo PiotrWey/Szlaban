@@ -30,7 +30,7 @@ public class LambdaAdvisory extends AbstractAdvisory{
   }
 
   @Override
-  public boolean isApplied() {
+  public boolean isResolved() {
     return isApplied.getAsBoolean();
   }
 

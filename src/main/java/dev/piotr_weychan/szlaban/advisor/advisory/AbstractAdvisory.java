@@ -42,17 +42,17 @@ public abstract class AbstractAdvisory implements Advisory {
     return severity;
   }
 
-  public abstract boolean isApplied();
+  public abstract boolean isResolved();
 
   /**
    * Called when the advisory is being resolved.
    * @implNote {@link AbstractAdvisory#resolve()} already checks if the advisory is applied, so
-   * {@link AbstractAdvisory#isApplied()} is always {@code false} in this function.
+   * {@link AbstractAdvisory#isResolved()} is always {@code false} in this function.
    */
   protected abstract void onResolve();
 
   public final void resolve() {
-    if (isApplied()) return;
+    if (isResolved()) return;
     onResolve();
   }
 }

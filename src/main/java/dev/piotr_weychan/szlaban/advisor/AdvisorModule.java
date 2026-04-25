@@ -138,7 +138,7 @@ public final class AdvisorModule extends AbstractModule {
   }
 
   public boolean isResolved(String id) {
-    return advisories.get(id).isApplied();
+    return advisories.get(id).isResolved();
   }
 
   public Set<String> getDismissedAdvisories() {
@@ -224,8 +224,8 @@ public final class AdvisorModule extends AbstractModule {
                   audience.sendMessage(
                       text(advisory.getName(), NamedTextColor.GOLD)
                           .decorate(TextDecoration.BOLD)
-                          .append(text(" [" + (advisory.isApplied() ? "✔" : "✘") + "]",
-                              advisory.isApplied() ? NamedTextColor.GREEN : NamedTextColor.RED))
+                          .append(text(" [" + (advisory.isResolved() ? "✔" : "✘") + "]",
+                              advisory.isResolved() ? NamedTextColor.GREEN : NamedTextColor.RED))
                   );
                   audience.sendMessage(advisory.getDescription().asComponent().color(NamedTextColor.YELLOW));
                   audience.sendMessage(Component.empty());
@@ -234,7 +234,7 @@ public final class AdvisorModule extends AbstractModule {
 
                   // dynamically generate actions based on advisory state
                   //noinspection ExtractMethodRecommender
-                  boolean isApplied = advisory.isApplied();
+                  boolean isApplied = advisory.isResolved();
                   boolean isDismissed = getDismissedAdvisories().contains(id);
 
                   Component actions = Component.empty();
@@ -278,7 +278,7 @@ public final class AdvisorModule extends AbstractModule {
                 TextColor colour;
                 if (dismissedAdvisories.contains(id)) { // dismissed
                   colour = NamedTextColor.GRAY;
-                } else if (!advisory.isApplied()) { // needs applied
+                } else if (!advisory.isResolved()) { // needs applied
                   colour = NamedTextColor.RED;
                 } else {
                   colour = NamedTextColor.GREEN;

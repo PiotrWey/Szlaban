@@ -8,6 +8,7 @@ import dev.piotr_weychan.szlaban.behaviour.AbstractBehaviour;
 import dev.piotr_weychan.szlaban.behaviour.BehaviourContext;
 import dev.piotr_weychan.szlaban.behaviour.Capability;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 
 import java.util.EnumSet;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AbstractModuleTest {
-  protected static final JavaPlugin mockPlugin = mock(JavaPlugin.class);
+  private static final JavaPlugin mockPlugin = mock(JavaPlugin.class);
 
   private static class TestBehaviour extends AbstractBehaviour {
     public int started = 0;
@@ -46,7 +47,8 @@ class AbstractModuleTest {
     }
   }
 
-  AbstractModuleTest() {
+  @BeforeEach
+  void setup() {
     Logger logger = mock(Logger.class);
     when(mockPlugin.getSLF4JLogger()).thenReturn(logger);
   }
