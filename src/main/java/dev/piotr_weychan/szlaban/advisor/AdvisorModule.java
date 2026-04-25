@@ -46,13 +46,11 @@ public final class AdvisorModule extends AbstractModule {
   private final Map<String, Advisory> advisories = new HashMap<>();
   private final Set<String> dismissedAdvisories = new HashSet<>();
 
-  private final File advisorDataFile;
-  private final YamlConfiguration advisorData;
+  private final File advisorDataFile = new File(plugin.getDataFolder(), "advisor_data.yml");
+  private YamlConfiguration advisorData;
 
   public AdvisorModule(JavaPlugin plugin, EnumSet<Capability> capabilities) {
     super(plugin, capabilities);
-    this.advisorDataFile = new File(plugin.getDataFolder(), "advisor_data.yml");
-    this.advisorData = YamlConfiguration.loadConfiguration(this.advisorDataFile);
   }
 
   @Override
@@ -83,7 +81,7 @@ public final class AdvisorModule extends AbstractModule {
     dismissedAdvisories.add(id);
 
     // convert to list
-    advisorData.set("dismissed", new ArrayList<>(dismissedAdvisories));
+    advisorData.set("dismissed-advisories", new ArrayList<>(dismissedAdvisories));
 
     // save to file
     try {
@@ -105,7 +103,7 @@ public final class AdvisorModule extends AbstractModule {
     }
 
     // load them into memory
-    List<String> dismissed = advisorData.getStringList("dismissed");
+    List<String> dismissed = advisorData.getStringList("dismissed-advisories");
     dismissedAdvisories.addAll(dismissed);
   }
 
@@ -116,6 +114,14 @@ public final class AdvisorModule extends AbstractModule {
     if (!advisorDataFile.exists())
       plugin.saveResource("advisor_data.yml", false);
 
+    // load contents of advisor data
+    this.advisorData = YamlConfiguration.loadConfiguration(this.advisorDataFile);
+
+    boolean showFirstLoginMessage = plugin.getConfig().getBoolean("advisor.show-first-login-message", true);
+
+    if (showFirstLoginMessage)
+      registerBehaviour(new OwnerNotifierBehaviour(behaviourContext, this, advisorData, advisorDataFile));
+
     registerAdvisories();
 
 
@@ -123,11 +129,19 @@ public final class AdvisorModule extends AbstractModule {
 
   /* ====== Command Definitions =======  */
 
-  private Map<String, Advisory> getAdvisories() {
+  public Map<String, Advisory> getAdvisories() {
     return advisories;
   }
 
-  private Set<String> getDismissedAdvisories() {
+  public boolean isDismissed(String id) {
+    return dismissedAdvisories.contains(id);
+  }
+
+  public boolean isResolved(String id) {
+    return advisories.get(id).isApplied();
+  }
+
+  public Set<String> getDismissedAdvisories() {
     return dismissedAdvisories;
   }
 
@@ -205,7 +219,7 @@ public final class AdvisorModule extends AbstractModule {
                   Audience audience = ctx.getSource().getSender();
 
                   audience.sendMessage(
-                      text("━".repeat(advisory.getName().length()), NamedTextColor.DARK_GRAY)
+                      text("━━━━━━━━━━━━━━━━━━━━━━", NamedTextColor.DARK_GRAY)
                   );
                   audience.sendMessage(
                       text(advisory.getName(), NamedTextColor.GOLD)
@@ -240,6 +254,9 @@ public final class AdvisorModule extends AbstractModule {
                     );
                   }
                   if (!actions.equals(Component.empty())) audience.sendMessage(actions);
+                  audience.sendMessage(
+                      text("━━━━━━━━━━━━━━━━━━━━━━", NamedTextColor.DARK_GRAY)
+                  );
 
 
                   return Command.SINGLE_SUCCESS;
@@ -251,7 +268,10 @@ public final class AdvisorModule extends AbstractModule {
               Component list = text("The following advisories are available:", NamedTextColor.GOLD)
                   .appendNewline();
 
-              for (Map.Entry<String, Advisory> entry : getAdvisories().entrySet()) {
+              List<Map.Entry<String, Advisory>> entries = new ArrayList<>(getAdvisories().entrySet());
+              for (int i = 0; i < entries.size(); i++) {
+                Map.Entry<String, Advisory> entry = entries.get(i);
+
                 String id = entry.getKey();
                 Advisory advisory = entry.getValue();
 
@@ -268,11 +288,10 @@ public final class AdvisorModule extends AbstractModule {
                     text("• " + advisory.getName(), colour)
                         .hoverEvent(HoverEvent.showText(advisory.getDescription()))
                         .clickEvent(ClickEvent.runCommand("/szlaban %s info ".formatted(name) + id))
-                ).append(Component.newline());
+                );
+                // don't end with a blank line
+                if (i < entries.size() - 1) list = list.appendNewline();
               }
-
-              // remove last newline
-              list = list.children().removeLast();
 
               ctx.getSource().getSender().sendMessage(list);
 

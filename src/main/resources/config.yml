@@ -21,14 +21,6 @@ advisor:
   # Whether to show owners the first-time login message
   show-first-login-message: true
 
-  # List of advisory IDs that have been ignored
-  ignored-advisories:
-  # - online_mode
-  # - whitelist
-  # - rcon
-  # - chat_signing
-
-
 # Settings for the firewall module
 firewall:
   # What engine to use for firewall management

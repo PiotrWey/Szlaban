@@ -90,8 +90,10 @@ public final class Advisories {
             "Disable RCON",
             text("Disables remote console access to the server over the network."),
             Component.empty()
-                .append(text("RCON allows full console access over the network. If left enabled, even with a "))
-                .append(text("password, it presents an unnecessary attack surface and can lead to "))
+                .append(text("RCON allows full console access over the network. Even with a password, credentials "))
+                .append(text("can be leaked or brute-forced, granting an attacker "))
+                .append(text("complete control").decorate(TextDecoration.BOLD))
+                .append(text(" over your server. Disable it unless you have a specific need for it."))
         )
     );
 
