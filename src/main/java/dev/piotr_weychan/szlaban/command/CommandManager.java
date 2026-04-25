@@ -24,7 +24,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
@@ -57,7 +56,7 @@ public class CommandManager {
     return mod;
   }
 
-  public final LiteralCommandNode<CommandSourceStack> createConfigCommand(@NotNull final String name) {
+  public final LiteralCommandNode<CommandSourceStack> createConfigCommand(final String name) {
 
     LiteralArgumentBuilder<CommandSourceStack> bobTheBuilder = Commands.literal(name) // can we fix it
         .then(module())
