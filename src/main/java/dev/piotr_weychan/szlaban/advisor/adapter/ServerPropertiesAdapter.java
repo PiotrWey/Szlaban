@@ -13,14 +13,14 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.util.Properties;
 
-public class ServerPropertiesAdapter extends ConfigAdapter {
+public class ServerPropertiesAdapter implements ConfigAdapter {
   private final Properties properties;
+  private final JavaPlugin plugin;
+  private final File file;
 
   public ServerPropertiesAdapter(JavaPlugin plugin) {
-    super(
-        plugin,
-        new File(plugin.getServer().getPluginsFolder().getParentFile(), "server.properties")
-    );
+    this.plugin = plugin;
+    this.file = new File(plugin.getServer().getPluginsFolder().getParentFile(), "server.properties");
 
     this.properties = new Properties();
 

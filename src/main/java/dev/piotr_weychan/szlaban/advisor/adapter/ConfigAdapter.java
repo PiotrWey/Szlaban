@@ -7,24 +7,30 @@
 
 package dev.piotr_weychan.szlaban.advisor.adapter;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import javax.annotation.Nullable;
-import java.io.File;
 
-public abstract class ConfigAdapter {
-  protected final JavaPlugin plugin;
-  protected final File file;
-
-  public ConfigAdapter(JavaPlugin plugin, File file) {
-    this.plugin = plugin;
-    this.file = file;
-  }
-
+public interface ConfigAdapter {
+  /**
+   * Gets the specified value from the adapted config
+   * @param path the full path to the entry in the config file. This may change by implementation and is
+   *             not standardised
+   * @return the corresponding object, or {@code null} if not found
+   */
   @Nullable
-  public abstract Object getValue(String key);
-  public abstract void setValue(String key, Object value);
+  Object getValue(String path);
 
-  public abstract void save();
+  /**
+   * Sets the value at the specified key
+   * @param path the full path to the entry in the config file. This may change by implementation and is
+   *             not standardised
+   * @param value the new value for the key
+   */
+  void setValue(String path, Object value);
+
+  /**
+   * Saves the current version of the adapted config to the corresponding path.
+   * @implSpec this is not supposed to throw IOExceptions, make sure they are wrapped in a try-catch with logging
+   */
+  void save();
 
 }
