@@ -26,6 +26,7 @@ class AbstractAdvisoryTest {
     @Override
     protected void onResolve() {
       resolutionCount++;
+      resolved = true;
     }
   }
 
