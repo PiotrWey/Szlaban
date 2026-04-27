@@ -38,7 +38,7 @@ public final class Szlaban extends JavaPlugin {
   private final EnumSet<Capability> capabilities;
 
   public Szlaban() {
-    this.moduleManager = new ModuleManager(this);
+    this.moduleManager = new ModuleManager(/* this */);
     this.capabilities = EnumSet.noneOf(Capability.class);
   }
 

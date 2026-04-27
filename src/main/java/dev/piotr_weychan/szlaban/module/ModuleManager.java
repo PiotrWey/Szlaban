@@ -7,7 +7,7 @@
 
 package dev.piotr_weychan.szlaban.module;
 
-import org.bukkit.plugin.java.JavaPlugin;
+//import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -20,10 +20,10 @@ public final class ModuleManager {
   private final Map<String, Supplier<Module>> moduleSuppliers = new HashMap<>();
   private final Map<String, Module> modules = new HashMap<>();
 
-  private final JavaPlugin plugin;
+//  private final JavaPlugin plugin;
 
-  public ModuleManager(JavaPlugin plugin) {
-    this.plugin = plugin;
+  public ModuleManager(/* JavaPlugin plugin */) {
+    // this.plugin = plugin;
   }
 
   /**

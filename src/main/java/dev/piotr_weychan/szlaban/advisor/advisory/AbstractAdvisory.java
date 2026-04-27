@@ -9,7 +9,7 @@ package dev.piotr_weychan.szlaban.advisor.advisory;
 
 import net.kyori.adventure.text.ComponentLike;
 
-public abstract class AbstractAdvisory implements Advisory {
+public abstract non-sealed class AbstractAdvisory implements Advisory {
   private final String name;
   private final ComponentLike description;
   private final ComponentLike reason;

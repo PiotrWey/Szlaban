@@ -10,7 +10,8 @@ package dev.piotr_weychan.szlaban.advisor.advisory;
 import net.kyori.adventure.text.ComponentLike;
 
 
-public interface Advisory {
+public sealed interface Advisory
+    permits AbstractAdvisory {
   String getName();
   ComponentLike getDescription();
   ComponentLike getReason();
