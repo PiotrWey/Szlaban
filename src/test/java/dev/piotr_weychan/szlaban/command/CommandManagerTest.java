@@ -43,7 +43,7 @@ class CommandManagerTest {
   @BeforeEach
   void setUp() {
     plugin = mock(JavaPlugin.class, RETURNS_DEEP_STUBS);
-    moduleManager = new ModuleManager(plugin);
+    moduleManager = new ModuleManager(/* plugin */);
     commandManager = new CommandManager(plugin, moduleManager);
   }
 

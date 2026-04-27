@@ -51,10 +51,16 @@ class ModuleManagerTest {
     }
   }
 
+
+  @BeforeEach
+  void setUp() {
+    mockPlugin = mock(JavaPlugin.class);
+  }
+
   // test if registration lifecycle methods are called
   @Test
   void registrationLifecycleMethods() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref = new AtomicReference<>();
 
@@ -70,15 +76,10 @@ class ModuleManagerTest {
 
   }
 
-  @BeforeEach
-  void setUp() {
-     mockPlugin = mock(JavaPlugin.class);
-  }
-
   // test if unregistration lifecycle methods are called
   @Test
   void unregistrationLifecycleMethods() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref = new AtomicReference<>();
 
@@ -97,7 +98,7 @@ class ModuleManagerTest {
   // test if we can access modules after registration
   @Test
   void moduleAccessById() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref = new AtomicReference<>();
 
@@ -113,7 +114,7 @@ class ModuleManagerTest {
   // test if modules can be accessed by class
   @Test
   void moduleAccessByClass() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref = new AtomicReference<>();
 
@@ -130,7 +131,7 @@ class ModuleManagerTest {
   // gets all module ids
   @Test
   void getsModuleIds() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     // register multiple modules
     mm.registerModule("mod1", TestModule::new);
@@ -143,7 +144,7 @@ class ModuleManagerTest {
 
   @Test
   void getsModuleObjects() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref1 = new AtomicReference<>();
     AtomicReference<TestModule> ref2 = new AtomicReference<>();
@@ -168,7 +169,7 @@ class ModuleManagerTest {
 
   @Test
   void getsModuleEntries() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<Module> ref1 = new AtomicReference<>();
     AtomicReference<Module> ref2 = new AtomicReference<>();
@@ -199,7 +200,7 @@ class ModuleManagerTest {
   // test that duplicate calls to module registration are ignored and do not overwrite
   @Test
   void duplicateRegistration() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref1 = new AtomicReference<>();
     AtomicReference<TestModule> ref2 = new AtomicReference<>();
@@ -223,7 +224,7 @@ class ModuleManagerTest {
   // test behaviour if an invalid module is accessed
   @Test
   void noModuleAccess() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     assertNull(mm.getModule("mod1"));
   }
@@ -231,7 +232,7 @@ class ModuleManagerTest {
   // test behaviour if a removed module is accessed
   @Test
   void removedModuleAccess() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref = new AtomicReference<>();
 
@@ -249,7 +250,7 @@ class ModuleManagerTest {
   // test that registration lifecycle methods are only called once!
   @Test
   void noDuplicateRegistrationCalls() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     AtomicReference<TestModule> ref = new AtomicReference<>();
 
@@ -271,7 +272,7 @@ class ModuleManagerTest {
   // test that reloading modules works properly
   @Test
   void reloadModuleCreatesNewInstance() {
-    ModuleManager mm = new ModuleManager(mockPlugin);
+    ModuleManager mm = new ModuleManager(/* mockPlugin */);
 
     // register the supplier
     mm.registerModule("mod1", TestModule::new);
