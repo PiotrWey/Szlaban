@@ -116,6 +116,9 @@ This project is licensed under the [GNU Lesser General Public License v3.0](LICE
 with additional terms under GPL-3.0 section 7 – see [LICENCE.ADDITIONAL_TERMS](LICENCE.ADDITIONAL_TERMS)
 for details.
 
+***
+
+*This project is not affiliated with, endorsed by, or associated with Mojang Studios AB or Microsoft. 'Minecraft' is a trademark of Mojang Studios AB and is used here solely for descriptive purposes.*
 
 ## Footnotes
 
